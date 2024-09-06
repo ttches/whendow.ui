@@ -89,35 +89,25 @@ const MonthContainer = styled.div`
 `;
 
 const Calendar = () => {
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(
+    new Date().getMonth()
+  );
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
-  const thisMonthFirstDateTime = new Date(currentYear, currentMonth, 1);
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+  const thisMonthFirstDateTime = new Date(currentYear, currentMonthIndex, 1);
+  const firstDayOfMonth = new Date(currentYear, currentMonthIndex, 1).getDay();
 
-  const thisMonthLastDateTime = new Date(currentYear, currentMonth + 1, 0);
+  const thisMonthLastDateTime = new Date(currentYear, currentMonthIndex + 1, 0);
   const lastDateOfMonth = thisMonthLastDateTime.getDate();
   const lastDayofMonth = thisMonthLastDateTime.getDay();
 
-  const previousMonthLastDateTime = new Date(currentYear, currentMonth, 0);
+  const previousMonthLastDateTime = new Date(
+    currentYear,
+    currentMonthIndex || 12,
+    0
+  );
   const lastDateOfPreviousMonth = previousMonthLastDateTime.getDate();
   const lastDayOfPreviousMonth = previousMonthLastDateTime.getDay();
-
-  const createCellData = ({
-    date,
-    month,
-    year,
-  }: {
-    date: number;
-    month: number;
-    year: number;
-  }) => {
-    return {
-      date: date,
-      month: month,
-      year: year,
-    };
-  };
 
   const getDateArray = (
     firstDayOfMonth: number,
@@ -126,52 +116,48 @@ const Calendar = () => {
   ) => {
     const previousMonthArray = new Array(firstDayOfMonth)
       .fill(0)
-      .map((_, i) =>
-        createCellData({
-          date: lastDateOfPreviousMonth - i,
-          month: currentMonth - 1,
-          year: currentYear,
-        })
+      .map(
+        (_, i) =>
+          `${currentMonthIndex !== 0 ? currentYear : currentYear - 1}/${
+            currentMonthIndex || 12
+          }/${lastDateOfPreviousMonth - i}`
       )
       .reverse();
 
-    const thisMonthArray = new Array(lastDateOfMonth).fill(0).map((_, i) =>
-      createCellData({
-        date: i + 1,
-        month: currentMonth,
-        year: currentYear,
-      })
-    );
+    const thisMonthArray = new Array(lastDateOfMonth)
+      .fill(0)
+      .map((_, i) => `${currentYear}/${currentMonthIndex + 1}/${i + 1}`);
 
     const nextMonthArrayLength =
       42 - (previousMonthArray.length + thisMonthArray.length);
 
-    const nextMonthArray = new Array(nextMonthArrayLength).fill(0).map((_, i) =>
-      createCellData({
-        date: i + 1,
-        month: currentMonth + 1,
-        year: currentYear,
-      })
-    );
+    const nextMonthArray = new Array(nextMonthArrayLength)
+      .fill(0)
+      .map(
+        (_, i) =>
+          `${currentMonthIndex !== 11 ? currentYear : currentYear + 1}/${
+            (currentMonthIndex + 2) % 12
+          }/${i + 1}`
+      );
 
     return [...previousMonthArray, ...thisMonthArray, ...nextMonthArray];
   };
 
   const handleBackMonth = () => {
-    if (currentMonth === 0) {
-      setCurrentMonth(11);
+    if (currentMonthIndex === 0) {
+      setCurrentMonthIndex(11);
       setCurrentYear(currentYear - 1);
     } else {
-      setCurrentMonth(currentMonth - 1);
+      setCurrentMonthIndex(currentMonthIndex - 1);
     }
   };
 
   const handleNextMonth = () => {
-    if (currentMonth === 11) {
-      setCurrentMonth(0);
+    if (currentMonthIndex === 11) {
+      setCurrentMonthIndex(0);
       setCurrentYear(currentYear + 1);
     } else {
-      setCurrentMonth(currentMonth + 1);
+      setCurrentMonthIndex(currentMonthIndex + 1);
     }
   };
 
@@ -181,11 +167,14 @@ const Calendar = () => {
     lastDateOfPreviousMonth
   );
 
+  console.log(dateArray.join("\n"));
+  console.log("current month", currentMonthIndex);
+
   return (
     <CalendarContainer>
       <MonthContainer>
         <ChangeMonth onClick={handleBackMonth}>{"-"}</ChangeMonth>
-        <Month>{`${months[currentMonth]}`}</Month>
+        <Month>{`${months[currentMonthIndex]}`}</Month>
         <ChangeMonth onClick={handleNextMonth}>{"-"}</ChangeMonth>
       </MonthContainer>
 
@@ -193,16 +182,19 @@ const Calendar = () => {
         {daysOfWeek.map((day) => (
           <DayCell key={day}>{day}</DayCell>
         ))}
-        {dateArray.map((date) => (
-          <DateCell
-            key={`${date?.year}-${date?.month}-${date?.date}`}
-            className={classNames({
-              "out-of-bounds": date?.month !== currentMonth,
-            })}
-          >
-            {date?.date}
-          </DateCell>
-        ))}
+        {dateArray.map((dateString) => {
+          const date = new Date(dateString);
+          return (
+            <DateCell
+              key={dateString}
+              className={classNames({
+                "out-of-bounds": date.getMonth() != currentMonthIndex,
+              })}
+            >
+              {date.getDate()}
+            </DateCell>
+          );
+        })}
       </CellsContainer>
     </CalendarContainer>
   );
