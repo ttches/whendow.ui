@@ -69,10 +69,11 @@ button:focus-visible {
 
 @font-face {
   font-family: "simplifica";
-  src: local("simplifica"), url("./fonts/simplifica.ttf") format("truetype");
+  src: local("simplifica"),
+    url("assets/fonts/simplifica.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "copasetic";
-  src: local("copasetic"), url("./fonts/copasetic.ttf") format("truetype");
+  src: local("copasetic"), url("assets/fonts/copasetic.ttf") format("truetype");
 }
