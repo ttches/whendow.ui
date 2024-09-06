@@ -20,6 +20,7 @@ const months = [
 const CalendarContainer = styled.div`
   border-radius: 10px;
   overflow: hidden;
+  user-select: none;
 `;
 
 const CellsContainer = styled.div`
