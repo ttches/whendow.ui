@@ -19,6 +19,7 @@ const months = [
 
 const CalendarContainer = styled.div`
   border-radius: 10px;
+  max-width: 550px;
   overflow: hidden;
   user-select: none;
 `;
@@ -137,7 +138,7 @@ const Calendar = () => {
       .map(
         (_, i) =>
           `${currentMonthIndex !== 11 ? currentYear : currentYear + 1}/${
-            (currentMonthIndex + 2) % 12
+            (currentMonthIndex + 2) % 12 || 12
           }/${i + 1}`
       );
 
