@@ -181,8 +181,8 @@ const Calendar = () => {
       </MonthContainer>
 
       <CellsContainer>
-        {daysOfWeek.map((day) => (
-          <DayCell key={day}>{day}</DayCell>
+        {daysOfWeek.map((day, i) => (
+          <DayCell key={i}>{day}</DayCell>
         ))}
         {dateArray.map((dateString) => {
           const date = new Date(dateString);
