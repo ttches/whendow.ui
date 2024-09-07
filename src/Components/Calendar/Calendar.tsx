@@ -22,6 +22,8 @@ const CalendarContainer = styled.div`
   max-width: 550px;
   overflow: hidden;
   user-select: none;
+  font-weight: bold;
+  font-size: 80px;
 `;
 
 const CellsContainer = styled.div`
@@ -172,34 +174,7 @@ const Calendar = () => {
   console.log(dateArray.join("\n"));
   console.log("current month", currentMonthIndex);
 
-  return (
-    <CalendarContainer>
-      <MonthContainer>
-        <ChangeMonth onClick={handleBackMonth}>{"-"}</ChangeMonth>
-        <Month>{`${months[currentMonthIndex]}`}</Month>
-        <ChangeMonth onClick={handleNextMonth}>{"-"}</ChangeMonth>
-      </MonthContainer>
-
-      <CellsContainer>
-        {daysOfWeek.map((day) => (
-          <DayCell key={day}>{day}</DayCell>
-        ))}
-        {dateArray.map((dateString) => {
-          const date = new Date(dateString);
-          return (
-            <DateCell
-              key={dateString}
-              className={classNames({
-                "out-of-bounds": date.getMonth() != currentMonthIndex,
-              })}
-            >
-              {date.getDate()}
-            </DateCell>
-          );
-        })}
-      </CellsContainer>
-    </CalendarContainer>
-  );
+  return <CalendarContainer>FUCK YOU MARKIE</CalendarContainer>;
 };
 
 export default Calendar;
