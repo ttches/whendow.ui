@@ -66,7 +66,7 @@ const DayCell = styled.div`
   cursor: default;
   display: flex;
   font-family: "simplifica";
-  height: 40px;
+  height: 24px;
   justify-content: center;
   width: calc(100% / 7);
 `;
@@ -74,7 +74,7 @@ const DayCell = styled.div`
 const Month = styled.h3`
   color: #551665;
   font-family: "copasetic";
-  font-size: 36px;
+  font-size: 24px;
   margin: 0px;
   width: 140px;
   user-select: none;
@@ -83,7 +83,7 @@ const Month = styled.h3`
 const ChangeMonth = styled.h3`
   cursor: pointer;
   color: #551665;
-  font-family: "copasetic";
+  font-family: "simplifica";
   font-size: 36px;
   margin: 0px;
   user-select: none;
@@ -93,8 +93,10 @@ const ChangeMonth = styled.h3`
 `;
 
 const MonthContainer = styled.div`
+  align-items: center;
   background-color: #d8b9ff;
   display: flex;
+  height: 42px;
   justify-content: space-around;
   width: 100%;
 `;
@@ -197,9 +199,9 @@ const Calendar = ({
   return (
     <CalendarContainer>
       <MonthContainer>
-        <ChangeMonth onClick={handleBackMonth}>{"-"}</ChangeMonth>
+        <ChangeMonth onClick={handleBackMonth}>{"<"}</ChangeMonth>
         <Month>{`${months[currentMonthIndex]}`}</Month>
-        <ChangeMonth onClick={handleNextMonth}>{"-"}</ChangeMonth>
+        <ChangeMonth onClick={handleNextMonth}>{">"}</ChangeMonth>
       </MonthContainer>
 
       <CellsContainer>
