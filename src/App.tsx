@@ -1,10 +1,10 @@
 import "./App.css";
-import MeetingCalendar from "./Components/Calendar/MeetingCalendar";
+import CreateMeeting from "./Components/CreateMeeting";
 
 function App() {
   return (
     <>
-      <MeetingCalendar />
+      <CreateMeeting />
     </>
   );
 }

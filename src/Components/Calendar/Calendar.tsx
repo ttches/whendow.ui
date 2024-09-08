@@ -66,7 +66,6 @@ const DayCell = styled.div`
   cursor: default;
   display: flex;
   font-family: "simplifica";
-  height: 24px;
   justify-content: center;
   width: calc(100% / 7);
 `;
