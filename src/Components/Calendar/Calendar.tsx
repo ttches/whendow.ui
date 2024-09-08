@@ -42,8 +42,12 @@ const DateCell = styled.div`
   height: 80px;
   justify-content: center;
   width: calc(100% / 7);
+
   &.out-of-bounds {
     background-color: #481154;
+  }
+  &.selected {
+    background-color: #aa2bd1;
   }
   &:hover {
     background-color: #20a2a2;
@@ -90,9 +94,19 @@ const MonthContainer = styled.div`
   width: 100%;
 `;
 
-const Calendar = () => {
+type CalendarProps = {
+  initialMonth?: number;
+  onDateClick: (dateString: string) => void;
+  selectedDates: string[];
+};
+
+const Calendar = ({
+  initialMonth,
+  onDateClick,
+  selectedDates,
+}: CalendarProps) => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(
-    new Date().getMonth()
+    initialMonth || new Date().getMonth()
   );
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
@@ -163,6 +177,9 @@ const Calendar = () => {
     }
   };
 
+  const getHandleDateCellClick = (dateString: string) => () =>
+    onDateClick(dateString);
+
   const dateArray = getDateArray(
     firstDayOfMonth,
     lastDateOfMonth,
@@ -190,8 +207,10 @@ const Calendar = () => {
             <DateCell
               key={dateString}
               className={classNames({
+                selected: selectedDates.includes(dateString),
                 "out-of-bounds": date.getMonth() != currentMonthIndex,
               })}
+              onClick={getHandleDateCellClick(dateString)}
             >
               {date.getDate()}
             </DateCell>
