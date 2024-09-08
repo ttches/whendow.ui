@@ -57,8 +57,8 @@ const DateCell = styled.div`
       right: 0;
       bottom: 0;
       left: 0;
-      border: 3px solid #aa2bd1;
-      border-radius: 10px;
+      border: 4px solid #aa2bd1;
+      border-radius: 6px;
       margin: 2px;
     }
     background-color: #aa2bd1;
