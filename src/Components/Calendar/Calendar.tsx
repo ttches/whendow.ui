@@ -46,9 +46,14 @@ const DateCell = styled.div`
   &.out-of-bounds {
     background-color: #481154;
   }
+
   &.selected {
     background-color: #aa2bd1;
+    &:hover {
+      background-color: #0d7b7b;
+    }
   }
+
   &:hover {
     background-color: #20a2a2;
   }
