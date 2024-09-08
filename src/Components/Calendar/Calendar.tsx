@@ -48,6 +48,7 @@ const DateCell = styled.div`
   }
 
   &.selected {
+    border: 3px solid #aa2bd1;
     background-color: #aa2bd1;
     &:hover {
       background-color: #0d7b7b;

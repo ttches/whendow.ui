@@ -29,8 +29,8 @@ const StyledButton = styled.button`
   margin-right: 4px;
 
   &:disabled {
-    border-color: white;
-    color: white;
+    border-color: #b096ce;
+    color: #b096ce;
   }
 `;
 
