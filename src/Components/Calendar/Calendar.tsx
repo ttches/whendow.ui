@@ -42,13 +42,25 @@ const DateCell = styled.div`
   height: 80px;
   justify-content: center;
   width: calc(100% / 7);
+  position: relative;
 
   &.out-of-bounds {
     background-color: #481154;
   }
 
   &.selected {
-    border: 3px solid #aa2bd1;
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border: 3px solid #aa2bd1;
+      border-radius: 10px;
+      margin: 2px;
+    }
     background-color: #aa2bd1;
     &:hover {
       background-color: #0d7b7b;
