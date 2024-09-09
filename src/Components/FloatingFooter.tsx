@@ -15,10 +15,10 @@ const FooterContainer = styled.div`
 
 const StyledButton = styled.button`
   align-items: center;
-  background-color: transparent;
+  background-color: #aa2bd1;
   border: 3px solid #4b015e;
   border-radius: 20px 80px 80px 20px;
-  color: #4b015e;
+  color: white;
   display: flex;
   font-family: "simplifica";
   justify-content: center;
@@ -29,8 +29,14 @@ const StyledButton = styled.button`
   margin-right: 4px;
 
   &:disabled {
+    background-color: transparent;
     border-color: #b096ce;
     color: #b096ce;
+  }
+
+  &:hover {
+    background-color: #0d7b7b;
+    border-color: #aa2bd1;
   }
 `;
 
