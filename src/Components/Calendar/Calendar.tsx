@@ -67,6 +67,13 @@ const DateCell = styled.div`
     }
   }
 
+  &.is-in-range {
+    background-color: #601972;
+
+    /* border-bottom: 4px solid #20a2a254; */
+    /* border-bottom: 4px solid #aa2bd136; */
+  }
+
   &:hover {
     background-color: #20a2a2;
   }
@@ -115,6 +122,7 @@ const MonthContainer = styled.div`
 
 type CalendarProps = {
   initialMonth?: number;
+  isInRange: (dateString: string) => boolean;
   onDateClick: (dateString: string) => void;
   selectedDates: string[];
 };
@@ -123,6 +131,7 @@ const Calendar = ({
   initialMonth,
   onDateClick,
   selectedDates,
+  isInRange,
 }: CalendarProps) => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(
     initialMonth || new Date().getMonth()
@@ -228,6 +237,7 @@ const Calendar = ({
               className={classNames({
                 selected: selectedDates.includes(dateString),
                 "out-of-bounds": date.getMonth() != currentMonthIndex,
+                "is-in-range": isInRange(dateString),
               })}
               onClick={getHandleDateCellClick(dateString)}
             >

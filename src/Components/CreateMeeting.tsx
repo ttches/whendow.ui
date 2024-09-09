@@ -82,12 +82,23 @@ const CreateMeeting = () => {
     setStep(step + 1);
   };
 
+  const isInRange = (dateString: string) => {
+    if (!startDate || !endDate) {
+      return false;
+    }
+
+    const date = new Date(dateString);
+
+    return date > new Date(startDate) && date < new Date(endDate);
+  };
+
   return step === 0 ? (
     <div>
       <div style={{ display: "grid" }}>
         <CalendarContainer>
           <Calendar
             initialMonth={initialMonth}
+            isInRange={isInRange}
             onDateClick={handleDateClick}
             selectedDates={selectedDates}
           />
