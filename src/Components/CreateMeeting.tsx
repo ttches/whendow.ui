@@ -123,20 +123,7 @@ const CreateMeeting = () => {
       </div>
     </div>
   ) : (
-    <Complete onClick={handleSubmit}>
-      <div>I'm glad you're staying here</div>
-      {step > 1 && (
-        <div
-          style={{
-            fontFamily: "simplifica",
-            fontSize: "24px",
-            marginTop: "40px",
-          }}
-        >
-          {"< for now >"}
-        </div>
-      )}
-    </Complete>
+    <Complete onClick={handleSubmit}>to be continued</Complete>
   );
 };
 
