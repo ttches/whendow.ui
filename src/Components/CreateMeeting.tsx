@@ -67,15 +67,8 @@ const CreateMeeting = () => {
       return;
     }
 
-    if (!endDate) {
-      setEndDate(dateString);
-      return;
-    }
-
-    if (date > new Date(endDate)) {
-      setEndDate(dateString);
-      return;
-    }
+    setEndDate(dateString);
+    return;
   };
 
   const getCtaVerbiage = () => {
