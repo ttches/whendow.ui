@@ -11,6 +11,8 @@ const FooterContainer = styled.div`
   border-radius: 80px;
   display: flex;
   justify-content: space-between;
+  justify-self: flex-end;
+  width: 240px;
 `;
 
 const StyledButton = styled.button`
@@ -34,7 +36,7 @@ const StyledButton = styled.button`
     color: #b096ce;
   }
 
-  &:hover {
+  &:hover&:not(:disabled) {
     background-color: #0d7b7b;
     border-color: #aa2bd1;
   }

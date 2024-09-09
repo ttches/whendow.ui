@@ -75,7 +75,7 @@ const CreateMeeting = () => {
       return "END DATE";
     }
 
-    return "CREATE MEETING";
+    return "CREATE";
   };
 
   const handleSubmit = () => {
@@ -84,7 +84,7 @@ const CreateMeeting = () => {
 
   return step === 0 ? (
     <div>
-      <div>
+      <div style={{ display: "grid" }}>
         <CalendarContainer>
           <Calendar
             initialMonth={initialMonth}
