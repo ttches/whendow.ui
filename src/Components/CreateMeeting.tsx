@@ -44,6 +44,8 @@ const CreateMeeting = () => {
   const [step, setStep] = useState(0);
 
   const handleDateClick = (dateString: string) => {
+    const date = new Date(dateString);
+
     if (dateString === startDate) {
       setStartDate("");
       setEndDate("");
@@ -60,7 +62,17 @@ const CreateMeeting = () => {
       return;
     }
 
+    if (date < new Date(startDate)) {
+      setStartDate(dateString);
+      return;
+    }
+
     if (!endDate) {
+      setEndDate(dateString);
+      return;
+    }
+
+    if (date > new Date(endDate)) {
       setEndDate(dateString);
       return;
     }
