@@ -68,11 +68,11 @@ const CreateMeeting = () => {
 
   const getCtaVerbiage = () => {
     if (!startDate) {
-      return "START DATE";
+      return "TAP START DATE";
     }
 
     if (!endDate) {
-      return "END DATE";
+      return "TAP END DATE";
     }
 
     return "CREATE";

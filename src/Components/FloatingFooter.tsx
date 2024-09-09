@@ -12,7 +12,6 @@ const FooterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   justify-self: flex-end;
-  width: 240px;
 `;
 
 const StyledButton = styled.button`
@@ -47,6 +46,7 @@ const TextContainer = styled.div`
   color: #4b015e;
   display: flex;
   margin-left: 32px;
+  padding-right: 24px;
   font-family: "copasetic";
   font-size: 24px;
 `;
