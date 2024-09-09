@@ -45,15 +45,19 @@ const TextContainer = styled.div`
 
 type FloatingFooterProps = {
   disabled?: boolean;
-  onClick?: () => void;
+  onButtonClick?: () => void;
   text?: string;
 };
 
-const FloatingFooter = ({ disabled, onClick, text }: FloatingFooterProps) => {
+const FloatingFooter = ({
+  disabled,
+  onButtonClick,
+  text,
+}: FloatingFooterProps) => {
   return (
     <FooterContainer>
       <TextContainer>{text}</TextContainer>
-      <StyledButton disabled={disabled} onClick={onClick}>
+      <StyledButton disabled={disabled} onClick={onButtonClick}>
         {">"}
       </StyledButton>
     </FooterContainer>
