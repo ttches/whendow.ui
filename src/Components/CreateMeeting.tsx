@@ -3,11 +3,11 @@ import Calendar from "./Calendar/Calendar";
 import FloatingFooter from "./FloatingFooter";
 import { useState } from "react";
 
-const CalendarContainer = styled.div`
+const StepContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-const Complete = styled.div`
+const Form = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,33 +15,41 @@ const Complete = styled.div`
   background-color: #d8b9ff;
   color: #4b015e;
   font-family: "copasetic";
-  font-size: 36px;
   width: 295px;
-  height: 600px;
+  height: 450px;
   border-radius: 9px;
   position: relative;
-  user-select: none;
-  &:after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    border: 4px solid #481154;
-    border-radius: 6px;
-    margin: 16px;
+`;
+
+const FormInput = styled.input`
+  background-color: white;
+  color: #4b015e;
+  border-radius: 9px;
+  border: 1px solid black;
+  box-shadow: none;
+  font-size: 28px;
+  margin: 16px;
+  padding: 8px;
+  width: 80%;
+
+  ::placeholder {
+    color: #b096ce;
+  }
+
+  &:focus {
+    outline: 16px solid #cb8adf;
+    border: 4px solid #aa2bd1;
   }
 `;
 
 const CreateMeeting = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [meetingName, setMeetingName] = useState("");
+  const [step, setStep] = useState(0);
 
   const initialMonth = new Date().getMonth();
   const selectedDates = [startDate, endDate].filter(Boolean);
-  const [step, setStep] = useState(0);
 
   const handleDateClick = (dateString: string) => {
     const date = new Date(dateString);
@@ -83,6 +91,12 @@ const CreateMeeting = () => {
     return "CREATE";
   };
 
+  const handleMeetingNameChange = (
+    event: React.FormEvent<HTMLInputElement>
+  ) => {
+    setMeetingName(event.currentTarget.value);
+  };
+
   const handleSubmit = () => {
     setStep(step + 1);
   };
@@ -97,26 +111,45 @@ const CreateMeeting = () => {
     return date > new Date(startDate) && date < new Date(endDate);
   };
 
-  return step === 0 ? (
+  const isButtonDisabled = () => {
+    if (step === 0) {
+      return !startDate || !endDate;
+    }
+
+    if (step === 1) {
+      return !meetingName;
+    }
+  };
+
+  return (
     <div>
       <div style={{ display: "grid" }}>
-        <CalendarContainer>
-          <Calendar
-            initialMonth={initialMonth}
-            isInRange={isInRange}
-            onDateClick={handleDateClick}
-            selectedDates={selectedDates}
-          />
-        </CalendarContainer>
+        <StepContainer>
+          {step === 0 ? (
+            <Calendar
+              initialMonth={initialMonth}
+              isInRange={isInRange}
+              onDateClick={handleDateClick}
+              selectedDates={selectedDates}
+            />
+          ) : (
+            <Form>
+              <FormInput
+                type="text"
+                onChange={handleMeetingNameChange}
+                placeholder="Event Name"
+                value={meetingName}
+              />
+            </Form>
+          )}
+        </StepContainer>
         <FloatingFooter
-          disabled={!startDate || !endDate}
+          disabled={isButtonDisabled()}
           onButtonClick={handleSubmit}
           text={getCtaVerbiage()}
         />
       </div>
     </div>
-  ) : (
-    <Complete onClick={handleSubmit}>to be continued</Complete>
   );
 };
 
