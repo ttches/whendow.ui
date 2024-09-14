@@ -122,7 +122,7 @@ const MonthContainer = styled.div`
 
 type CalendarProps = {
   initialMonth?: number;
-  isInRange: (dateString: string) => boolean;
+  isInRange?: (dateString: string) => boolean;
   onDateClick: (dateString: string) => void;
   selectedDates: string[];
 };
@@ -131,7 +131,7 @@ const Calendar = ({
   initialMonth,
   onDateClick,
   selectedDates,
-  isInRange,
+  isInRange = () => false,
 }: CalendarProps) => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(
     initialMonth || new Date().getMonth()

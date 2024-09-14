@@ -15,8 +15,10 @@ const Form = styled.div`
   background-color: #d8b9ff;
   color: #4b015e;
   font-family: "copasetic";
-  width: 295px;
-  height: 450px;
+  width: 100%;
+  height: 120px;
+  margin-top: 12px;
+  max-width: 400px;
   border-radius: 9px;
   position: relative;
 `;
@@ -125,14 +127,13 @@ const CreateMeeting = () => {
     <div>
       <div style={{ display: "grid" }}>
         <StepContainer>
-          {step === 0 ? (
-            <Calendar
-              initialMonth={initialMonth}
-              isInRange={isInRange}
-              onDateClick={handleDateClick}
-              selectedDates={selectedDates}
-            />
-          ) : (
+          <Calendar
+            initialMonth={initialMonth}
+            isInRange={isInRange}
+            onDateClick={handleDateClick}
+            selectedDates={selectedDates}
+          />
+          {step === 1 && (
             <Form>
               <FormInput
                 type="text"

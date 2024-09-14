@@ -1,10 +1,10 @@
 import "./App.css";
-import CreateMeeting from "./Components/CreateMeeting";
+import Router from "./Router";
 
 function App() {
   return (
     <>
-      <CreateMeeting />
+      <Router />
     </>
   );
 }
