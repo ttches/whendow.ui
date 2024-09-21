@@ -2,8 +2,10 @@ import styled from "styled-components";
 import Calendar from "./Calendar/Calendar";
 import FloatingFooter from "./FloatingFooter";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { BASE } from "../Router";
 
-const StepContainer = styled.div`
+export const StepContainer = styled.div`
   margin-bottom: 16px;
 `;
 
@@ -49,6 +51,7 @@ const CreateMeeting = () => {
   const [endDate, setEndDate] = useState("");
   const [meetingName, setMeetingName] = useState("");
   const [step, setStep] = useState(0);
+  const navigate = useNavigate();
 
   const initialMonth = new Date().getMonth();
   const selectedDates = [startDate, endDate].filter(Boolean);
@@ -100,6 +103,9 @@ const CreateMeeting = () => {
   };
 
   const handleSubmit = () => {
+    if (step === 1) {
+      navigate(`${BASE}/meeting/${encodeURIComponent(meetingName)}`);
+    }
     setStep(step + 1);
   };
 

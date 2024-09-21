@@ -3,7 +3,7 @@ const createGraphqlClient = (url: string) => {
     query: string,
     variables: { [key: string]: string } = {}
   ) => {
-    return await fetch(url, {
+    return fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15,7 +15,7 @@ const createGraphqlClient = (url: string) => {
   return { request };
 };
 
-const client = createGraphqlClient("http://localhost:5045/graphql/");
+const client = createGraphqlClient("http://157.230.173.18:7148/graphql/");
 const { request } = client;
 
 export { request };
