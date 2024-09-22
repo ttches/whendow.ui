@@ -1,10 +1,4 @@
-import {
-  Route,
-  BrowserRouter,
-  Routes,
-  useParams,
-  HashRouter,
-} from "react-router-dom";
+import { Route, Routes, useParams, HashRouter } from "react-router-dom";
 import CreateMeeting from "./Components/CreateMeeting";
 import Meeting from "./Components/Meeting";
 import SetAvailability from "./Components/SetAvailability";
