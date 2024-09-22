@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { BASE } from "../Router";
 
 const Meeting = () => {
   const meetingId = useParams().meetingId!;
@@ -8,7 +7,7 @@ const Meeting = () => {
   return (
     <div>
       <h1>Meeting {meetingId}</h1>
-      <button onClick={() => navigate(`${BASE}/set-availability/${meetingId}`)}>
+      <button onClick={() => navigate(`/set-availability/${meetingId}`)}>
         Set Availability
       </button>
     </div>

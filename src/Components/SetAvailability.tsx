@@ -3,7 +3,6 @@ import Calendar from "./Calendar/Calendar";
 import { StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
 import { useNavigate } from "react-router-dom";
-import { BASE } from "../Router";
 
 type SetAvailabilityProps = {
   meetingName: string;
@@ -35,7 +34,7 @@ const SetAvailability = ({ meetingName, startDate }: SetAvailabilityProps) => {
   };
 
   const handleSubmit = () => {
-    navigate(`${BASE}/${encodeURIComponent(meetingName)}`);
+    navigate(`/`);
   };
 
   const isButtonDisabled = () => !availability.length;

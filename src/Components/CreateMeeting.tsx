@@ -3,7 +3,6 @@ import Calendar from "./Calendar/Calendar";
 import FloatingFooter from "./FloatingFooter";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE } from "../Router";
 
 export const StepContainer = styled.div`
   margin-bottom: 16px;
@@ -104,7 +103,7 @@ const CreateMeeting = () => {
 
   const handleSubmit = () => {
     if (step === 1) {
-      navigate(`${BASE}/meeting/${encodeURIComponent(meetingName)}`);
+      navigate(`/meeting/${encodeURIComponent(meetingName)}`);
     }
     setStep(step + 1);
   };
