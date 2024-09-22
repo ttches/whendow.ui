@@ -1,15 +1,25 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import SetAvailability from "./SetAvailability";
 
 const Meeting = () => {
+  const [showModal, setShowModal] = useState(false);
+
   const meetingId = useParams().meetingId!;
-  const navigate = useNavigate();
+
+  const handleSubmit = () => setShowModal(false);
 
   return (
     <div>
       <h1>Meeting {meetingId}</h1>
-      <button onClick={() => navigate(`/set-availability/${meetingId}`)}>
-        Set Availability
-      </button>
+      <button onClick={() => setShowModal(true)}>Set Availability</button>
+      {showModal && (
+        <SetAvailability
+          onSubmit={handleSubmit}
+          meetingName={meetingId}
+          startDate="2024/09/12"
+        />
+      )}
     </div>
   );
 };

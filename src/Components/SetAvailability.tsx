@@ -2,16 +2,15 @@ import { useState } from "react";
 import Calendar from "./Calendar/Calendar";
 import { StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
-import { useNavigate } from "react-router-dom";
 
 type SetAvailabilityProps = {
   meetingName: string;
+  onSubmit: (availability: string[]) => void;
   startDate: string;
 };
 
-const SetAvailability = ({ meetingName, startDate }: SetAvailabilityProps) => {
+const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
   const [availability, setAvailability] = useState<string[]>([]);
-  const navigate = useNavigate();
 
   const handleDateClick = (dateString: string) => {
     const previouslyClicked = availability.includes(dateString);
@@ -34,7 +33,7 @@ const SetAvailability = ({ meetingName, startDate }: SetAvailabilityProps) => {
   };
 
   const handleSubmit = () => {
-    navigate(`/`);
+    onSubmit(availability);
   };
 
   const isButtonDisabled = () => !availability.length;
