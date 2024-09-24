@@ -11,7 +11,7 @@ const Meeting = () => {
 
   return (
     <div>
-      <h1>Meeting {meetingId}</h1>
+      <h1>{meetingId}</h1>
       <button onClick={() => setShowModal(true)}>Set Availability</button>
       {showModal && (
         <SetAvailability
