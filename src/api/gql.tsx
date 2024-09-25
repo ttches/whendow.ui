@@ -1,3 +1,5 @@
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 const createGraphqlClient = (url: string) => {
   const request = async (
     query: string,
@@ -15,7 +17,7 @@ const createGraphqlClient = (url: string) => {
   return { request };
 };
 
-const client = createGraphqlClient("http://157.230.173.18:7148/graphql/");
+const client = createGraphqlClient(`${API_BASE}/graphql/`);
 const { request } = client;
 
 export { request };
