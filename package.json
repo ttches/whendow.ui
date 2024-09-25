@@ -5,7 +5,8 @@
   "type": "module",
   "homepage": "http://localhost:5173/whendow.ui",
   "scripts": {
-    "dev": "vite --mode dev",
+    "dev": "vite dev",
+    "local": "vite --mode dev",
     "build": "vite build",
     "build-safe": "tsc -b && vite build",
     "lint": "eslint .",
