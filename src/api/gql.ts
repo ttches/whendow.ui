@@ -1,17 +1,19 @@
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 const createGraphqlClient = (url: string) => {
-  const request = async (
+  const request = async <T>(
     query: string,
     variables: { [key: string]: string } = {}
-  ) => {
-    return fetch(url, {
+  ): Promise<T> => {
+    const res = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ query, variables }),
+      body: JSON.stringify({ query, variables: { input: variables } }),
     });
+
+    return await res.json();
   };
 
   return { request };
