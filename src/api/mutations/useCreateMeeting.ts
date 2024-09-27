@@ -11,16 +11,18 @@ type CreateMeetingInput = {
 
 type CreateMeetingResponse = {
   data: {
-    createMeeting: {
-      endDate: string;
-      locked: boolean;
-      name: string;
-      owner: string;
-      startDate: string;
-      createdAt: string;
-      id: string;
-    };
+    createMeeting: MeetingFromResponse;
   };
+};
+
+export type MeetingFromResponse = {
+  endDate: string;
+  locked: boolean;
+  name: string;
+  owner: string;
+  startDate: string;
+  createdAt: string;
+  id: string;
 };
 
 const query = `mutation createMeeting($input: CreateMeetingInput!) {
