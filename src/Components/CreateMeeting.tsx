@@ -2,7 +2,6 @@ import styled from "styled-components";
 import Calendar from "./Calendar/Calendar";
 import FloatingFooter from "./FloatingFooter";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import useCreateMeeting from "../api/mutations/useCreateMeeting";
 
 export const StepContainer = styled.div`

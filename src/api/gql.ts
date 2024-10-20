@@ -7,6 +7,7 @@ const createGraphqlClient = (url: string) => {
   ): Promise<T> => {
     const res = await fetch(url, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
