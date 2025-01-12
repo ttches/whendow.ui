@@ -6,6 +6,7 @@ import { MeetingAvailability } from "../api/queries/getAvailabilitiesByMeetingId
 type ViewAvailabilityProps = {
   availabilities: MeetingAvailability[];
   startDate: string;
+  test: string;
 };
 
 const ViewAvailability = ({
