@@ -4,7 +4,6 @@ import { StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
 
 type SetAvailabilityProps = {
-  meetingName: string;
   onSubmit: (availability: string[]) => void;
   startDate: string;
 };
