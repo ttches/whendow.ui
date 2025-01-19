@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Calendar from "./Calendar/Calendar";
 import { StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
+// import useSetAvailabilities from "../api/mutations/useSetAvailabilities";
+import { Form, FormInput } from "./FloatingInput";
 
 type SetAvailabilityProps = {
   onSubmit: (availability: string[]) => void;
@@ -10,6 +12,9 @@ type SetAvailabilityProps = {
 
 const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
   const [availability, setAvailability] = useState<string[]>([]);
+  const [userNameInput, setUserNameInput] = useState("");
+
+  // const setAvailabilities = useSetAvailabilities();
 
   const handleDateClick = (dateString: string) => {
     const previouslyClicked = availability.includes(dateString);
@@ -35,6 +40,13 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
     onSubmit(availability);
   };
 
+  const handleUserNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.currentTarget?.value || "";
+    const sanitizedValue = newValue.replace(/(\d+|\s|\W)/, "");
+
+    setUserNameInput(sanitizedValue);
+  };
+
   const isButtonDisabled = () => !availability.length;
 
   return (
@@ -46,6 +58,14 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
           selectedDates={availability}
         />
       </StepContainer>
+      <Form>
+        <FormInput
+          type="text"
+          onChange={handleUserNameChange}
+          placeholder="User Name"
+          value={userNameInput}
+        />
+      </Form>
       <FloatingFooter
         disabled={isButtonDisabled()}
         onButtonClick={handleSubmit}
