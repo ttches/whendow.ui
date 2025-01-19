@@ -3,17 +3,24 @@ import Calendar from "./Calendar/Calendar";
 import FloatingFooter from "./FloatingFooter";
 import { useState } from "react";
 import useCreateMeeting from "../api/mutations/useCreateMeeting";
-import { Form, FormInput } from "./FloatingInput";
+import { Form, FormInput } from "./Elements/FloatingInput";
 
 export const StepContainer = styled.div`
   margin-bottom: 16px;
 `;
 
+enum CreateMeetingSteps {
+  SelectDates,
+  CreateMeetingName,
+  CreateUserName,
+}
+
 const CreateMeeting = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [meetingName, setMeetingName] = useState("");
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(CreateMeetingSteps.SelectDates);
+  const [username, setUsername] = useState("");
   const createMeeting = useCreateMeeting();
 
   const initialMonth = new Date().getMonth();
@@ -65,18 +72,36 @@ const CreateMeeting = () => {
     setMeetingName(event.currentTarget.value);
   };
 
+  const handleUsernameChange = (event: React.FormEvent<HTMLInputElement>) => {
+    setUsername(event.currentTarget.value);
+  };
+
+  const getNextStep = () => {
+    switch (step) {
+      case CreateMeetingSteps.SelectDates:
+        return CreateMeetingSteps.CreateMeetingName;
+      case CreateMeetingSteps.CreateMeetingName:
+        return CreateMeetingSteps.CreateUserName;
+      default:
+        return undefined;
+    }
+  };
+
   const handleSubmit = () => {
-    if (step === 1) {
+    const nextStep = getNextStep();
+
+    if (!nextStep) {
       createMeeting.mutate({
         name: meetingName,
-        owner: "ty",
+        owner: username,
         startDate,
         endDate,
       });
+
       return;
     }
 
-    setStep(step + 1);
+    setStep(nextStep);
   };
 
   const isInRange = (dateString: string) => {
@@ -90,12 +115,16 @@ const CreateMeeting = () => {
   };
 
   const isButtonDisabled = () => {
-    if (step === 0) {
+    if (step === CreateMeetingSteps.SelectDates) {
       return !startDate || !endDate;
     }
 
-    if (step === 1) {
+    if (step === CreateMeetingSteps.CreateMeetingName) {
       return !meetingName;
+    }
+
+    if (step === CreateMeetingSteps.CreateUserName) {
+      return !username || !meetingName;
     }
   };
 
@@ -109,13 +138,23 @@ const CreateMeeting = () => {
             onDateClick={handleDateClick}
             selectedDates={selectedDates}
           />
-          {step === 1 && (
+          {step >= 1 && (
             <Form>
               <FormInput
                 type="text"
                 onChange={handleMeetingNameChange}
                 placeholder="Event Name"
                 value={meetingName}
+              />
+            </Form>
+          )}
+          {step >= 2 && (
+            <Form>
+              <FormInput
+                type="text"
+                onChange={handleUsernameChange}
+                placeholder="Username"
+                value={username}
               />
             </Form>
           )}
