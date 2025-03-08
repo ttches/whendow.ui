@@ -3,7 +3,7 @@ import Calendar from "./Calendar/Calendar";
 import { StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
 // import useSetAvailabilities from "../api/mutations/useSetAvailabilities";
-import { Form, FormInput } from "./FloatingInput";
+import { Form, FormInput } from "./Elements/FloatingInput";
 
 type SetAvailabilityProps = {
   onSubmit: (availability: string[]) => void;
