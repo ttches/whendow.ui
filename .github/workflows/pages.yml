@@ -1,13 +1,10 @@
 # Simple workflow for deploying static content to GitHub Pages
 name: Deploy to GitHub Pages
 
+# Disabled - now using build-and-deploy.yml to deploy to server
 on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["master"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    # No triggers - manual only and disabled in UI
 
 # Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
