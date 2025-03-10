@@ -27,6 +27,11 @@ jobs:
       - name: Build
         run: yarn run build
 
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_API_TOKEN }}
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
