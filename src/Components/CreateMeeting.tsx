@@ -4,7 +4,16 @@ import FloatingFooter from "./FloatingFooter";
 import { useState, useEffect } from "react";
 import useCreateMeeting from "../api/mutations/useCreateMeeting";
 
+const Container = styled.div`
+  margin: 0 auto;
+  margin-top: 16px;
+  max-width: 550px;
+`;
+
 export const StepContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 16px;
 `;
 
@@ -162,7 +171,7 @@ const CreateMeeting = () => {
 
   return (
     <div>
-      <div style={{ display: "grid" }}>
+      <Container>
         <StepContainer>
           <Calendar
             initialMonth={initialMonth}
@@ -178,7 +187,7 @@ const CreateMeeting = () => {
           text={getCtaVerbiage()}
           input={getInput()}
         />
-      </div>
+      </Container>
     </div>
   );
 };
