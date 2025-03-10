@@ -11,7 +11,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  height: 100vh;
   background: linear-gradient(180deg, #1a0020 0%, #2a0033 100%);
   overflow: hidden;
 `;
@@ -42,7 +41,7 @@ const ContentSection = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  padding: 24px 16px;
+  padding: 24px 0;
   background: linear-gradient(
     180deg,
     rgba(170, 43, 209, 0.1) 0%,
@@ -51,11 +50,18 @@ const ContentSection = styled.div`
   flex: 1;
 `;
 
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  padding: 0 16px;
+`;
+
 const TopContent = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  width: 100%;
   margin-bottom: 24px;
 `;
 
@@ -85,8 +91,7 @@ const GetStartedButton = styled.button`
   font-size: 32px;
   height: 64px;
   justify-content: center;
-  width: 100%;
-  max-width: 320px;
+  width: 300px;
   transition: all 0.2s ease-in-out;
 
   &:hover {
@@ -103,8 +108,6 @@ const StepsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 100%;
-  max-width: 400px;
 `;
 
 const Step = styled.div`
@@ -113,7 +116,6 @@ const Step = styled.div`
   border-radius: 16px;
   display: flex;
   padding: 16px;
-  width: 100%;
   border: 1px solid rgba(170, 43, 209, 0.2);
   transition: background 0.2s ease;
 
@@ -155,28 +157,30 @@ const Homepage = () => {
         <Title>woahbundie</Title>
       </TitleSection>
       <ContentSection>
-        <TopContent>
-          <TextContainer>
-            <Description>Find a date to fit your group.</Description>
-          </TextContainer>
-          <GetStartedButton onClick={() => navigate("/create")}>
-            Get Started
-          </GetStartedButton>
-        </TopContent>
-        <StepsContainer>
-          <Step>
-            <StepNumber>1</StepNumber>
-            <StepText>Pick your date range</StepText>
-          </Step>
-          <Step>
-            <StepNumber>2</StepNumber>
-            <StepText>Share the link</StepText>
-          </Step>
-          <Step>
-            <StepNumber>3</StepNumber>
-            <StepText>Everyone marks their availability</StepText>
-          </Step>
-        </StepsContainer>
+        <ContentContainer>
+          <TopContent>
+            <TextContainer>
+              <Description>Find a date to fit your group.</Description>
+            </TextContainer>
+            <GetStartedButton onClick={() => navigate("/create")}>
+              Get Started
+            </GetStartedButton>
+          </TopContent>
+          <StepsContainer>
+            <Step>
+              <StepNumber>1</StepNumber>
+              <StepText>Pick your date range</StepText>
+            </Step>
+            <Step>
+              <StepNumber>2</StepNumber>
+              <StepText>Share the link</StepText>
+            </Step>
+            <Step>
+              <StepNumber>3</StepNumber>
+              <StepText>Everyone marks their availability</StepText>
+            </Step>
+          </StepsContainer>
+        </ContentContainer>
       </ContentSection>
     </Container>
   );
