@@ -2,8 +2,6 @@ import { ChangeEvent, useState } from "react";
 import Calendar from "./Calendar/Calendar";
 import { StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
-// import useSetAvailabilities from "../api/mutations/useSetAvailabilities";
-import { Form, FormInput } from "./Elements/FloatingInput";
 
 type SetAvailabilityProps = {
   onSubmit: (availability: string[]) => void;
@@ -13,8 +11,7 @@ type SetAvailabilityProps = {
 const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
   const [availability, setAvailability] = useState<string[]>([]);
   const [userNameInput, setUserNameInput] = useState("");
-
-  // const setAvailabilities = useSetAvailabilities();
+  const [showUsernameInput, setShowUsernameInput] = useState(false);
 
   const handleDateClick = (dateString: string) => {
     const previouslyClicked = availability.includes(dateString);
@@ -29,15 +26,28 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
   };
 
   const getCtaVerbiage = () => {
-    if (!availability.length) {
-      return "Tap available dates";
+    if (!showUsernameInput) {
+      return "TAP AVAILABLE DATES";
     }
 
-    return "Save";
+    return "";
   };
 
-  const handleSubmit = () => {
+  const handleNext = () => () => {
+    if (!showUsernameInput && availability.length > 0) {
+      setShowUsernameInput(true);
+      return;
+    }
+
     onSubmit(availability);
+  };
+
+  const handleBack = () => {
+    if (showUsernameInput) {
+      return () => setShowUsernameInput(false);
+    }
+
+    return undefined;
   };
 
   const handleUserNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +57,24 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
     setUserNameInput(sanitizedValue);
   };
 
-  const isButtonDisabled = () => !availability.length;
+  const isButtonDisabled = () => {
+    if (!showUsernameInput) {
+      return !availability.length;
+    }
+    return !userNameInput;
+  };
+
+  const getInput = () => {
+    if (showUsernameInput) {
+      return {
+        value: userNameInput,
+        onChange: handleUserNameChange,
+        placeholder: "Username",
+      };
+    }
+
+    return undefined;
+  };
 
   return (
     <div style={{ display: "grid" }}>
@@ -58,18 +85,12 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
           selectedDates={availability}
         />
       </StepContainer>
-      <Form>
-        <FormInput
-          type="text"
-          onChange={handleUserNameChange}
-          placeholder="User Name"
-          value={userNameInput}
-        />
-      </Form>
       <FloatingFooter
-        disabled={isButtonDisabled()}
-        onButtonClick={handleSubmit}
+        nextDisabled={isButtonDisabled()}
+        onNext={handleNext}
+        onBack={handleBack}
         text={getCtaVerbiage()}
+        input={getInput()}
       />
     </div>
   );
