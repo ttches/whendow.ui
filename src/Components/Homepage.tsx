@@ -10,7 +10,7 @@ const gradientShift = keyframes`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   background: linear-gradient(180deg, #1a0020 0%, #2a0033 100%);
   overflow: hidden;
 `;
@@ -23,7 +23,7 @@ const TitleSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 35vh;
+  height: 140px;
   animation: ${gradientShift} 15s ease infinite;
   box-shadow: 0 4px 20px rgba(170, 43, 209, 0.2);
 `;
@@ -41,21 +41,28 @@ const ContentSection = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 24px 16px;
+  padding: 24px 0;
   background: linear-gradient(
     180deg,
     rgba(170, 43, 209, 0.1) 0%,
     rgba(13, 123, 123, 0.1) 100%
   );
-  flex-grow: 1;
+  flex: 1;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  padding: 0 16px;
 `;
 
 const TopContent = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  margin-bottom: 24px;
 `;
 
 const TextContainer = styled.div`
@@ -72,16 +79,10 @@ const Description = styled.p`
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
-const glow = keyframes`
-  0% { box-shadow: 0 0 5px rgba(170, 43, 209, 0.2); }
-  50% { box-shadow: 0 0 20px rgba(170, 43, 209, 0.4); }
-  100% { box-shadow: 0 0 5px rgba(170, 43, 209, 0.2); }
-`;
-
 const GetStartedButton = styled.button`
   align-items: center;
   background-color: #aa2bd1;
-  border: none;
+  border: 2px solid transparent;
   border-radius: 80px;
   color: white;
   cursor: pointer;
@@ -90,67 +91,33 @@ const GetStartedButton = styled.button`
   font-size: 32px;
   height: 64px;
   justify-content: center;
-  width: 100%;
-  max-width: 320px;
-  margin-bottom: 24px;
-  animation: ${glow} 3s ease-in-out infinite;
+  width: 300px;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    border-color: #d8b9ff;
+    transform: scale(1.02);
+  }
 
   &:active {
     transform: scale(0.98);
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: -3px;
-    right: -3px;
-    bottom: -3px;
-    left: -3px;
-    border: 3px solid #d8b9ff;
-    border-radius: 80px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover::after {
-    opacity: 1;
   }
 `;
 
 const StepsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  max-width: 400px;
-`;
-
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  gap: 16px;
 `;
 
 const Step = styled.div`
   align-items: center;
-  animation: ${fadeIn} 0.5s ease-out forwards;
   background: rgba(216, 185, 255, 0.1);
   border-radius: 16px;
   display: flex;
-  opacity: 0;
   padding: 16px;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
   border: 1px solid rgba(170, 43, 209, 0.2);
-
-  &:nth-child(1) {
-    animation-delay: 0.2s;
-  }
-  &:nth-child(2) {
-    animation-delay: 0.4s;
-  }
-  &:nth-child(3) {
-    animation-delay: 0.6s;
-  }
+  transition: background 0.2s ease;
 
   &:active {
     background: rgba(216, 185, 255, 0.2);
@@ -190,28 +157,30 @@ const Homepage = () => {
         <Title>woahbundie</Title>
       </TitleSection>
       <ContentSection>
-        <TopContent>
-          <TextContainer>
-            <Description>Find a date to fit your group.</Description>
-          </TextContainer>
-          <GetStartedButton onClick={() => navigate("/create")}>
-            Get Started
-          </GetStartedButton>
-        </TopContent>
-        <StepsContainer>
-          <Step>
-            <StepNumber>1</StepNumber>
-            <StepText>Pick your date range</StepText>
-          </Step>
-          <Step>
-            <StepNumber>2</StepNumber>
-            <StepText>Share the link</StepText>
-          </Step>
-          <Step>
-            <StepNumber>3</StepNumber>
-            <StepText>Everyone marks their availability</StepText>
-          </Step>
-        </StepsContainer>
+        <ContentContainer>
+          <TopContent>
+            <TextContainer>
+              <Description>Find a date to fit your group.</Description>
+            </TextContainer>
+            <GetStartedButton onClick={() => navigate("/create")}>
+              Get Started
+            </GetStartedButton>
+          </TopContent>
+          <StepsContainer>
+            <Step>
+              <StepNumber>1</StepNumber>
+              <StepText>Pick your date range</StepText>
+            </Step>
+            <Step>
+              <StepNumber>2</StepNumber>
+              <StepText>Share the link</StepText>
+            </Step>
+            <Step>
+              <StepNumber>3</StepNumber>
+              <StepText>Everyone marks their availability</StepText>
+            </Step>
+          </StepsContainer>
+        </ContentContainer>
       </ContentSection>
     </Container>
   );
