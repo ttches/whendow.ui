@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import CreateMeeting from "./Components/CreateMeeting";
 import Markie from "./Components/Markie";
 import Meeting from "./Components/Meeting";
@@ -8,16 +8,14 @@ import Homepage from "./Components/Homepage";
 
 const AppRouter = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={`/`} element={<Homepage />} />
-        <Route path={`/page2`} element={<LandingTwo />} />
-        <Route path={`/create`} element={<CreateMeeting />} />
-        <Route path={`/meeting/:meetingId`} element={<Meeting />} />
-        <Route path={`/get-a-word`} element={<GetAWord />} />
-        <Route path={`/markie`} element={<Markie />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path={`/`} element={<Homepage />} />
+      <Route path={`/page2`} element={<LandingTwo />} />
+      <Route path={`/create`} element={<CreateMeeting />} />
+      <Route path={`/meeting/:meetingId`} element={<Meeting />} />
+      <Route path={`/get-a-word`} element={<GetAWord />} />
+      <Route path={`/markie`} element={<Markie />} />
+    </Routes>
   );
 };
 

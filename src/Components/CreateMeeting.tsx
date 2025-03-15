@@ -136,6 +136,8 @@ const CreateMeeting = () => {
   };
 
   const isButtonDisabled = () => {
+    if (createMeeting.isPending) return true;
+
     if (step === CreateMeetingSteps.SelectDates) {
       return !startDate || !endDate;
     }

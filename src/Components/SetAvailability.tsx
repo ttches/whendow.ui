@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 import Calendar from "./Calendar/Calendar";
 import { StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
+import useUsername from "../hooks/useUsername";
 
 type SetAvailabilityProps = {
   onSubmit: (availability: string[]) => void;
@@ -11,7 +12,7 @@ type SetAvailabilityProps = {
 const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
   const [availability, setAvailability] = useState<string[]>([]);
   const [userNameInput, setUserNameInput] = useState("");
-  const [showUsernameInput, setShowUsernameInput] = useState(false);
+  const username = useUsername();
 
   const handleDateClick = (dateString: string) => {
     const previouslyClicked = availability.includes(dateString);
@@ -25,30 +26,11 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
     setAvailability(nextAvailability);
   };
 
-  const getCtaVerbiage = () => {
-    if (!showUsernameInput) {
-      return "TAP AVAILABLE DATES";
-    }
-
-    return "";
-  };
-
   const handleNext = () => () => {
-    if (!showUsernameInput && availability.length > 0) {
-      setShowUsernameInput(true);
-      return;
-    }
-
     onSubmit(availability);
   };
 
-  const handleBack = () => {
-    if (showUsernameInput) {
-      return () => setShowUsernameInput(false);
-    }
-
-    return undefined;
-  };
+  const handleBack = () => undefined;
 
   const handleUserNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget?.value || "";
@@ -58,14 +40,14 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
   };
 
   const isButtonDisabled = () => {
-    if (!showUsernameInput) {
+    if (username) {
       return !availability.length;
     }
-    return !userNameInput;
+    return !availability.length || !userNameInput;
   };
 
   const getInput = () => {
-    if (showUsernameInput) {
+    if (!username) {
       return {
         value: userNameInput,
         onChange: handleUserNameChange,
@@ -89,7 +71,7 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
         nextDisabled={isButtonDisabled()}
         onNext={handleNext}
         onBack={handleBack}
-        text={getCtaVerbiage()}
+        text={username}
         input={getInput()}
       />
     </div>
