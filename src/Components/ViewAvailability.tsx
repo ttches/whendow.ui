@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Calendar from "./Calendar/Calendar";
-import { StepContainer } from "./CreateMeeting";
+import { Container, StepContainer } from "./CreateMeeting";
 import { MeetingAvailability } from "../api/queries/getAvailabilitiesByMeetingId";
 
 type ViewAvailabilityProps = {
@@ -19,14 +19,16 @@ const ViewAvailability = ({
   };
 
   return (
-    <div style={{ display: "grid" }}>
-      <StepContainer>
-        <Calendar
-          initialMonth={new Date(startDate).getMonth()}
-          onDateClick={handleDateClick}
-          selectedDates={[selectedDate]}
-        />
-      </StepContainer>
+    <div>
+      <Container>
+        <StepContainer>
+          <Calendar
+            initialMonth={new Date(startDate).getMonth()}
+            onDateClick={handleDateClick}
+            selectedDates={[selectedDate]}
+          />
+        </StepContainer>
+      </Container>
     </div>
   );
 };

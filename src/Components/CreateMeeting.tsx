@@ -4,7 +4,7 @@ import FloatingFooter from "./FloatingFooter";
 import { useState, useEffect } from "react";
 import useCreateMeeting from "../api/mutations/useCreateMeeting";
 
-const Container = styled.div`
+export const Container = styled.div`
   margin: 0 auto;
   margin-top: 16px;
   max-width: 550px;

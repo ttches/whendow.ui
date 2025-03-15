@@ -8,7 +8,7 @@ const getCookie = (cookieName: string) => {
 const getUserNameFromCookie = (meetingId: string) => {
   const cookieName = `when-${meetingId}`;
   const cookie = getCookie(cookieName) || "";
-  const decodedCookie = atob(cookie);
+  const decodedCookie = atob(decodeURIComponent(cookie));
 
   return decodedCookie.split(":")[0];
 };
