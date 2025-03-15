@@ -1,8 +1,7 @@
 const getCookie = (cookieName: string) => {
   const cookieString = document.cookie;
   const cookies = cookieString.split(";").map((cookie) => cookie.split("="));
-  const target = cookies.find(([name]) => name === cookieName);
-
+  const target = cookies.find(([name]) => name.trim() === cookieName);
   return target?.[1];
 };
 

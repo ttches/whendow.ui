@@ -214,9 +214,6 @@ const Calendar = ({
     lastDateOfPreviousMonth
   );
 
-  console.log(dateArray.join("\n"));
-  console.log("current month", currentMonthIndex);
-
   return (
     <CalendarContainer>
       <MonthContainer>
