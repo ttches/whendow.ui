@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import Calendar from "./Calendar/Calendar";
-import { StepContainer } from "./CreateMeeting";
+import { Container, StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
 import useUsername from "../hooks/useUsername";
 
@@ -59,21 +59,23 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
   };
 
   return (
-    <div style={{ display: "grid" }}>
-      <StepContainer>
-        <Calendar
-          initialMonth={new Date(startDate).getMonth()}
-          onDateClick={handleDateClick}
-          selectedDates={availability}
+    <div>
+      <Container>
+        <StepContainer>
+          <Calendar
+            initialMonth={new Date(startDate).getMonth()}
+            onDateClick={handleDateClick}
+            selectedDates={availability}
+          />
+        </StepContainer>
+        <FloatingFooter
+          nextDisabled={isButtonDisabled()}
+          onNext={handleNext}
+          onBack={handleBack}
+          text={username}
+          input={getInput()}
         />
-      </StepContainer>
-      <FloatingFooter
-        nextDisabled={isButtonDisabled()}
-        onNext={handleNext}
-        onBack={handleBack}
-        text={username}
-        input={getInput()}
-      />
+      </Container>
     </div>
   );
 };

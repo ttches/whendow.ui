@@ -19,7 +19,6 @@ const months = [
 
 const CalendarContainer = styled.div`
   border-radius: 10px;
-  max-width: 550px;
   overflow: hidden;
   user-select: none;
 `;
