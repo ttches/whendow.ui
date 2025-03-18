@@ -20,7 +20,7 @@ export const StepContainer = styled.div`
 enum CreateMeetingSteps {
   SelectDates,
   CreateMeetingName,
-  CreateUserName,
+  CreateUsername,
 }
 
 const CreateMeeting = () => {
@@ -111,14 +111,14 @@ const CreateMeeting = () => {
       case CreateMeetingSteps.SelectDates:
         return CreateMeetingSteps.CreateMeetingName;
       case CreateMeetingSteps.CreateMeetingName:
-        return CreateMeetingSteps.CreateUserName;
+        return CreateMeetingSteps.CreateUsername;
       default:
         return undefined;
     }
   };
 
   const handleBack = () => {
-    if (step === CreateMeetingSteps.CreateUserName) {
+    if (step === CreateMeetingSteps.CreateUsername) {
       return () => setStep(CreateMeetingSteps.CreateMeetingName);
     }
 
@@ -146,7 +146,7 @@ const CreateMeeting = () => {
       return !meetingName;
     }
 
-    if (step === CreateMeetingSteps.CreateUserName) {
+    if (step === CreateMeetingSteps.CreateUsername) {
       return !username || !meetingName;
     }
   };
@@ -160,7 +160,7 @@ const CreateMeeting = () => {
       };
     }
 
-    if (step === CreateMeetingSteps.CreateUserName) {
+    if (step === CreateMeetingSteps.CreateUsername) {
       return {
         value: username,
         onChange: handleUsernameChange,
