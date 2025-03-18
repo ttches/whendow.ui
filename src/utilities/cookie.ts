@@ -10,6 +10,7 @@ const getUserNameFromCookie = (meetingId: string) => {
   const cookie = getCookie(cookieName) || "";
   const decodedCookie = atob(decodeURIComponent(cookie));
 
+  console.log("decodedCookie", decodedCookie);
   return decodedCookie.split(":")[0];
 };
 

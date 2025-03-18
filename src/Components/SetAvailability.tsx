@@ -1,18 +1,39 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Calendar from "./Calendar/Calendar";
 import { Container, StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
 import useUsername from "../hooks/useUsername";
+import useLogin from "../api/mutations/useLogin";
+import { useParams } from "react-router-dom";
 
 type SetAvailabilityProps = {
   onSubmit: (availability: string[]) => void;
   startDate: string;
 };
 
+enum InputSteps {
+  None,
+  Username,
+  Passcode,
+}
+
 const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
+  const usernameFromCookie = useUsername();
+  const { meetingId } = useParams();
   const [availability, setAvailability] = useState<string[]>([]);
-  const [userNameInput, setUserNameInput] = useState("");
-  const username = useUsername();
+  const [usernameInput, setUsernameInput] = useState("");
+  const [passcodeInput, setPasscodeInput] = useState("");
+  const [step, setStep] = useState(
+    usernameFromCookie ? InputSteps.None : InputSteps.Username
+  );
+
+  const login = useLogin();
+
+  useEffect(() => {
+    if (login.isSuccess) {
+      setStep(InputSteps.None);
+    }
+  }, [login.isSuccess]);
 
   const handleDateClick = (dateString: string) => {
     const previouslyClicked = availability.includes(dateString);
@@ -27,31 +48,65 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
   };
 
   const handleNext = () => () => {
+    if (step === InputSteps.Username) {
+      setStep(InputSteps.Passcode);
+      return;
+    }
+
+    if (step === InputSteps.Passcode) {
+      login.mutate({
+        username: usernameInput,
+        passcode: passcodeInput,
+        meetingId: meetingId!,
+      });
+      return;
+    }
+
     onSubmit(availability);
   };
 
   const handleBack = () => undefined;
 
-  const handleUserNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget?.value || "";
     const sanitizedValue = newValue.replace(/(\d+|\s|\W)/, "");
 
-    setUserNameInput(sanitizedValue);
+    setUsernameInput(sanitizedValue);
+  };
+
+  const handlePasscodeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.currentTarget?.value || "";
+    const sanitizedValue = newValue.replace(/(\W)/, "-");
+
+    setPasscodeInput(sanitizedValue);
   };
 
   const isButtonDisabled = () => {
-    if (username) {
-      return !availability.length;
+    if (step === InputSteps.Username) {
+      return !usernameInput;
     }
-    return !availability.length || !userNameInput;
+
+    if (step === InputSteps.Passcode) {
+      return !passcodeInput;
+    }
+
+    return login.isPending;
   };
 
   const getInput = () => {
-    if (!username) {
+    if (step === InputSteps.Username) {
       return {
-        value: userNameInput,
-        onChange: handleUserNameChange,
+        value: usernameInput,
+        onChange: handleUsernameChange,
         placeholder: "Username",
+      };
+    }
+
+    if (step === InputSteps.Passcode) {
+      return {
+        value: passcodeInput,
+        onChange: handlePasscodeChange,
+        placeholder: "Passcode",
       };
     }
 
@@ -72,7 +127,7 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
           nextDisabled={isButtonDisabled()}
           onNext={handleNext}
           onBack={handleBack}
-          text={username}
+          text={usernameFromCookie}
           input={getInput()}
         />
       </Container>
