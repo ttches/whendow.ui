@@ -14,11 +14,13 @@ const Meeting = () => {
   const [calendarMode, setCalendarMode] = useState(CalendarMode.View);
   const meetingId = useParams().meetingId!;
   const { data: meeting } = useGetMeetingById({ id: meetingId });
-  const { data: availabilities } = useAvailabilitiesByMeetingId(meetingId);
+  const { data: availabilities = [] } = useAvailabilitiesByMeetingId(meetingId);
+
+  console.log("availabilities", availabilities);
 
   const { name, startDate } = meeting || {};
 
-  const handleSubmit = () => {
+  const onSetAvailabilitySuccess = () => {
     setCalendarMode(CalendarMode.View);
   };
 
@@ -46,11 +48,15 @@ const Meeting = () => {
       <button onClick={() => toggleCalendarMode()}>{getButtonContent()}</button>
       {calendarMode === CalendarMode.View ? (
         <ViewAvailability
-          availabilities={availabilities!}
+          availabilities={availabilities}
           startDate={startDate!}
         />
       ) : (
-        <SetAvailability onSubmit={handleSubmit} startDate={startDate!} />
+        <SetAvailability
+          availabilities={availabilities}
+          onSuccess={onSetAvailabilitySuccess}
+          startDate={startDate!}
+        />
       )}
     </div>
   );

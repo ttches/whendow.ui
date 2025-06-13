@@ -4,10 +4,13 @@ import { Container, StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
 import useUsername from "../hooks/useUsername";
 import useLogin from "../api/mutations/useLogin";
+import useSetAvailability from "../api/mutations/useSetAvailability";
 import { useParams } from "react-router-dom";
+import { MeetingAvailability } from "../api/queries/getAvailabilitiesByMeetingId";
 
 type SetAvailabilityProps = {
-  onSubmit: (availability: string[]) => void;
+  availabilities: MeetingAvailability[];
+  onSuccess: (availability: string[]) => void;
   startDate: string;
 };
 
@@ -15,12 +18,20 @@ enum InputSteps {
   None,
   Username,
   Passcode,
+  Submit,
 }
 
-const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
+const SetAvailability = ({
+  availabilities,
+  onSuccess,
+  startDate,
+}: SetAvailabilityProps) => {
   const usernameFromCookie = useUsername();
+  const initialDates = availabilities
+    .filter((availability) => availability.userName === usernameFromCookie)
+    .map((availability) => availability.date);
   const { meetingId } = useParams();
-  const [availability, setAvailability] = useState<string[]>([]);
+  const [dates, setDates] = useState<string[]>(initialDates);
   const [usernameInput, setUsernameInput] = useState("");
   const [passcodeInput, setPasscodeInput] = useState("");
   const [step, setStep] = useState(
@@ -28,41 +39,47 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
   );
 
   const login = useLogin();
+  const setAvailabilityMutation = useSetAvailability();
 
   useEffect(() => {
     if (login.isSuccess) {
       setStep(InputSteps.None);
+
+      const newDates = [...new Set([...dates, ...initialDates])];
+      setDates(newDates);
     }
   }, [login.isSuccess]);
 
   const handleDateClick = (dateString: string) => {
-    const previouslyClicked = availability.includes(dateString);
+    const previouslyClicked = dates.includes(dateString);
     let nextAvailability: string[] = [];
     if (previouslyClicked) {
-      nextAvailability = availability.filter((date) => date !== dateString);
+      nextAvailability = dates.filter((date) => date !== dateString);
     } else {
-      nextAvailability = [...availability, dateString];
+      nextAvailability = [...dates, dateString];
     }
 
-    setAvailability(nextAvailability);
+    setDates(nextAvailability);
   };
 
-  const handleNext = () => () => {
+  const handleNext = () => async () => {
     if (step === InputSteps.Username) {
-      setStep(InputSteps.Passcode);
-      return;
+      return handleUsernameNext();
     }
 
     if (step === InputSteps.Passcode) {
-      login.mutate({
+      await login.mutateAsync({
         username: usernameInput,
         passcode: passcodeInput,
         meetingId: meetingId!,
       });
-      return;
+
+      if (login.isError) {
+        return;
+      }
     }
 
-    onSubmit(availability);
+    handleSubmit();
   };
 
   const handleBack = () => undefined;
@@ -81,7 +98,39 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
     setPasscodeInput(sanitizedValue);
   };
 
+  const handleSubmit = () => {
+    setAvailabilityMutation.mutate(
+      {
+        meetingId: meetingId!,
+        dates,
+      },
+      {
+        onSuccess: () => onSuccess(dates),
+      }
+    );
+  };
+
+  const handleUsernameNext = () => {
+    if (!usernameInput) return;
+
+    const existingUser = availabilities.some(
+      (availability) => availability.userName === usernameInput
+    );
+
+    if (existingUser) {
+      setStep(InputSteps.Passcode);
+
+      return;
+    }
+
+    setStep(InputSteps.Submit);
+  };
+
   const isButtonDisabled = () => {
+    if (login.isPending || setAvailabilityMutation.isPending) {
+      return true;
+    }
+
     if (step === InputSteps.Username) {
       return !usernameInput;
     }
@@ -90,7 +139,15 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
       return !passcodeInput;
     }
 
-    return login.isPending;
+    if (step === InputSteps.Submit) {
+      const previousAvailability = availabilities.some(
+        (availability) => availability.userName === usernameFromCookie
+      );
+
+      return !dates.length && !previousAvailability;
+    }
+
+    return false;
   };
 
   const getInput = () => {
@@ -120,14 +177,14 @@ const SetAvailability = ({ onSubmit, startDate }: SetAvailabilityProps) => {
           <Calendar
             initialMonth={new Date(startDate).getMonth()}
             onDateClick={handleDateClick}
-            selectedDates={availability}
+            selectedDates={dates}
           />
         </StepContainer>
         <FloatingFooter
           nextDisabled={isButtonDisabled()}
           onNext={handleNext}
           onBack={handleBack}
-          text={usernameFromCookie}
+          text={usernameFromCookie || usernameInput}
           input={getInput()}
         />
       </Container>

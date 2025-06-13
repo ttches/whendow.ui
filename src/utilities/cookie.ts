@@ -14,4 +14,23 @@ const getUserNameFromCookie = (meetingId: string) => {
   return decodedCookie.split(":")[0];
 };
 
-export { getCookie, getUserNameFromCookie };
+const getUsername = (meetingId: string) => {
+  if (import.meta.env.DEV) {
+    return localStorage.getItem(`user-${meetingId}`);
+  } else {
+    return getUserNameFromCookie(meetingId);
+  }
+};
+
+const storeUserDataForDevelopment = (meetingId: string, username: string) => {
+  if (import.meta.env.DEV) {
+    localStorage.setItem(`user-${meetingId}`, username);
+  }
+};
+
+export {
+  getCookie,
+  getUserNameFromCookie,
+  getUsername,
+  storeUserDataForDevelopment,
+};

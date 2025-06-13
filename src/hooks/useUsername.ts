@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
-import { getUserNameFromCookie } from "../utilities/cookie";
+import { getUsername } from "../utilities/cookie";
 
 export const useUsername = () => {
   const { meetingId } = useParams();
-  return meetingId ? getUserNameFromCookie(meetingId) : "";
+  return meetingId ? getUsername(meetingId) : "";
 };
 
 export default useUsername;
