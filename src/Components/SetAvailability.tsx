@@ -102,7 +102,7 @@ const SetAvailability = ({
     setAvailabilityMutation.mutate(
       {
         meetingId: meetingId!,
-        dates,
+        dates, // bugged, can set everyones availability, duplicates things
       },
       {
         onSuccess: () => onSuccess(dates),
