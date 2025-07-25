@@ -13,7 +13,7 @@ enum CalendarMode {
 const Meeting = () => {
   const [calendarMode, setCalendarMode] = useState(CalendarMode.View);
   const meetingId = useParams().meetingId!;
-  const { data: meeting } = useGetMeetingById({ id: meetingId });
+  const { data: meeting, isLoading } = useGetMeetingById({ id: meetingId });
   const { data: availabilities = [] } = useAvailabilitiesByMeetingId(meetingId);
 
   console.log("availabilities", availabilities);
@@ -41,6 +41,10 @@ const Meeting = () => {
         return "Set Availability";
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
