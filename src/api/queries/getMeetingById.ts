@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { request } from "../gql";
+import { formatDate } from "../../utilities/dates";
 
 type GetMeetingByIdInput = {
   id: string;
@@ -24,6 +25,7 @@ type GetMeetingByIdResponse = {
 const query = `query getMeetingById($input: GetMeetingByIdInput!) {
   meetingById(input: $input) {
     name
+    endDate
     startDate
   }
 }`;
@@ -36,7 +38,11 @@ const useGetMeetingById = (input: GetMeetingByIdInput) => {
     queryFn: async () => {
       return request<GetMeetingByIdResponse>(query, { input });
     },
-    select: (data) => data.data.meetingById,
+    select: (data) => ({
+      ...data.data.meetingById,
+      startDate: formatDate(data.data.meetingById.startDate),
+      endDate: formatDate(data.data.meetingById.endDate),
+    }),
   });
 };
 

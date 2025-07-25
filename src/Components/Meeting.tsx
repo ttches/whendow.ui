@@ -18,7 +18,7 @@ const Meeting = () => {
 
   console.log("availabilities", availabilities);
 
-  const { name, startDate } = meeting || {};
+  const { name, startDate, endDate } = meeting || {};
 
   const onSetAvailabilitySuccess = () => {
     setCalendarMode(CalendarMode.View);
@@ -49,11 +49,13 @@ const Meeting = () => {
       {calendarMode === CalendarMode.View ? (
         <ViewAvailability
           availabilities={availabilities}
+          endDate={endDate!}
           startDate={startDate!}
         />
       ) : (
         <SetAvailability
           availabilities={availabilities}
+          endDate={endDate!}
           onSuccess={onSetAvailabilitySuccess}
           startDate={startDate!}
         />

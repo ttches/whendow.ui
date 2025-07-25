@@ -7,9 +7,11 @@ import useLogin from "../api/mutations/useLogin";
 import useSetAvailability from "../api/mutations/useSetAvailability";
 import { useParams } from "react-router-dom";
 import { MeetingAvailability } from "../api/queries/getAvailabilitiesByMeetingId";
+import { compareDates } from "../utilities/dates";
 
 type SetAvailabilityProps = {
   availabilities: MeetingAvailability[];
+  endDate: string;
   onSuccess: (availability: string[]) => void;
   startDate: string;
 };
@@ -23,6 +25,7 @@ enum InputSteps {
 
 const SetAvailability = ({
   availabilities,
+  endDate,
   onSuccess,
   startDate,
 }: SetAvailabilityProps) => {
@@ -30,6 +33,7 @@ const SetAvailability = ({
   const initialDates = availabilities
     .filter((availability) => availability.userName === usernameFromCookie)
     .map((availability) => availability.date);
+
   const { meetingId } = useParams();
   const [dates, setDates] = useState<string[]>(initialDates);
   const [usernameInput, setUsernameInput] = useState("");
@@ -37,6 +41,8 @@ const SetAvailability = ({
   const [step, setStep] = useState(
     usernameFromCookie ? InputSteps.None : InputSteps.Username
   );
+
+  console.log("dates", dates);
 
   const login = useLogin();
   const setAvailabilityMutation = useSetAvailability();
@@ -150,6 +156,11 @@ const SetAvailability = ({
     return false;
   };
 
+  const isInRange = (dateString: string) => {
+    const compare = compareDates(dateString);
+    return compare.isWithinRange(startDate, endDate);
+  };
+
   const getInput = () => {
     if (step === InputSteps.Username) {
       return {
@@ -176,6 +187,7 @@ const SetAvailability = ({
         <StepContainer>
           <Calendar
             initialMonth={new Date(startDate).getMonth()}
+            isInRange={isInRange}
             onDateClick={handleDateClick}
             selectedDates={dates}
           />

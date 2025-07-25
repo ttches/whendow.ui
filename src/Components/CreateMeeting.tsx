@@ -3,6 +3,7 @@ import Calendar from "./Calendar/Calendar";
 import FloatingFooter from "./FloatingFooter";
 import { useState, useEffect } from "react";
 import useCreateMeeting from "../api/mutations/useCreateMeeting";
+import { compareDates } from "../utilities/dates";
 
 export const Container = styled.div`
   margin: 0 auto;
@@ -41,8 +42,6 @@ const CreateMeeting = () => {
   }, [step, endDate]);
 
   const handleDateClick = (dateString: string) => {
-    const date = new Date(dateString);
-
     if (dateString === startDate) {
       setStartDate("");
       setEndDate("");
@@ -59,7 +58,7 @@ const CreateMeeting = () => {
       return;
     }
 
-    if (date < new Date(startDate)) {
+    if (compareDates(dateString).isBefore(startDate)) {
       setStartDate(dateString);
       return;
     }
@@ -78,6 +77,15 @@ const CreateMeeting = () => {
     }
 
     return "";
+  };
+
+  const isInRange = (dateString: string) => {
+    if (!startDate || !endDate) {
+      return true;
+    }
+
+    const compare = compareDates(dateString);
+    return compare.isWithinRange(startDate, endDate);
   };
 
   const handleMeetingNameChange = (
@@ -123,16 +131,6 @@ const CreateMeeting = () => {
     }
 
     return undefined;
-  };
-
-  const isInRange = (dateString: string) => {
-    if (!startDate || !endDate) {
-      return false;
-    }
-
-    const date = new Date(dateString);
-
-    return date > new Date(startDate) && date < new Date(endDate);
   };
 
   const isButtonDisabled = () => {

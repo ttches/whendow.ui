@@ -43,7 +43,7 @@ const DateCell = styled.div`
   width: calc(100% / 7);
   position: relative;
 
-  &.out-of-bounds {
+  &.out-of-month {
     background-color: #481154;
   }
 
@@ -71,6 +71,13 @@ const DateCell = styled.div`
 
     /* border-bottom: 4px solid #20a2a254; */
     /* border-bottom: 4px solid #aa2bd136; */
+  }
+
+  &.disabled {
+    background-color: #4e3654;
+    border: 1px solid #4e3654;
+    color: #a8a8a8;
+    cursor: not-allowed;
   }
 
   &:hover {
@@ -128,9 +135,9 @@ type CalendarProps = {
 
 const Calendar = ({
   initialMonth,
+  isInRange = (_dateString: string) => false,
   onDateClick,
   selectedDates,
-  isInRange = () => false,
 }: CalendarProps) => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(
     initialMonth || new Date().getMonth()
@@ -232,8 +239,9 @@ const Calendar = ({
               key={dateString}
               className={classNames({
                 selected: selectedDates.includes(dateString),
-                "out-of-bounds": date.getMonth() != currentMonthIndex,
-                "is-in-range": isInRange(dateString),
+                "out-of-month": date.getMonth() != currentMonthIndex,
+                // "is-in-range": isInRange(dateString),
+                disabled: !isInRange(dateString),
               })}
               onClick={getHandleDateCellClick(dateString)}
             >
