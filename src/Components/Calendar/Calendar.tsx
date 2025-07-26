@@ -1,6 +1,8 @@
 import classNames from "classnames";
 import { useState } from "react";
 import styled from "styled-components";
+import AvailabilityIndicator from "./AvailabilityIndicators";
+import { MeetingAvailability } from "../../api/queries/getAvailabilitiesByMeetingId";
 const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
 const months = [
   "January",
@@ -77,7 +79,6 @@ const DateCell = styled.div`
     background-color: #4e3654;
     border: 1px solid #4e3654;
     color: #a8a8a8;
-    cursor: not-allowed;
   }
 
   &:hover {
@@ -126,11 +127,25 @@ const MonthContainer = styled.div`
   width: 100%;
 `;
 
+export type IndicatorType =
+  | "none"
+  | "gradient-border"
+  | "gradient-triangle"
+  | "gradient-glow"
+  | "gradient-glow-strong"
+  | "gradient-background"
+  | "dots"
+  | "bars"
+  | "texture"
+  | "texture-squares";
+
 type CalendarProps = {
   initialMonth?: number;
   isInRange?: (dateString: string) => boolean;
   onDateClick: (dateString: string) => void;
   selectedDates: string[];
+  indicatorType?: IndicatorType;
+  availabilities?: MeetingAvailability[];
 };
 
 const Calendar = ({
@@ -138,11 +153,34 @@ const Calendar = ({
   isInRange = (_dateString: string) => false,
   onDateClick,
   selectedDates,
+  indicatorType = "texture",
+  availabilities = [],
 }: CalendarProps) => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(
     initialMonth || new Date().getMonth()
   );
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+  const totalGroupSize =
+    availabilities.length > 0
+      ? [...new Set(availabilities.map((a) => a.userName))].length
+      : 0;
+
+  const getAvailabilityPercentage = (dateString: string): number => {
+    if (!availabilities || totalGroupSize === 0) return 0;
+
+    const availabilitiesForDate = availabilities.filter(
+      (a) => a.date === dateString
+    );
+
+    if (availabilitiesForDate.length === 0) return 0;
+
+    const uniqueUsersForDate = [
+      ...new Set(availabilitiesForDate.map((a) => a.userName)),
+    ];
+
+    return Math.round((uniqueUsersForDate.length / totalGroupSize) * 100);
+  };
 
   const thisMonthFirstDateTime = new Date(currentYear, currentMonthIndex, 1);
   const firstDayOfMonth = new Date(currentYear, currentMonthIndex, 1).getDay();
@@ -234,6 +272,7 @@ const Calendar = ({
         ))}
         {dateArray.map((dateString) => {
           const date = new Date(dateString);
+          const availabilityPercentage = getAvailabilityPercentage(dateString);
           return (
             <DateCell
               key={dateString}
@@ -245,7 +284,13 @@ const Calendar = ({
               })}
               onClick={getHandleDateCellClick(dateString)}
             >
-              {date.getDate()}
+              <span style={{ position: "relative", zIndex: 1 }}>
+                {date.getDate()}
+              </span>
+              <AvailabilityIndicator
+                type={indicatorType}
+                percentage={availabilityPercentage}
+              />
             </DateCell>
           );
         })}

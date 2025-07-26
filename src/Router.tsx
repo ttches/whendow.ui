@@ -5,6 +5,7 @@ import Meeting from "./Components/Meeting";
 import GetAWord from "./Components/GetAWord";
 import LandingTwo from "./Components/Landing/LandingTwo";
 import Homepage from "./Components/Homepage";
+import CalendarShowcase from "./Components/CalendarShowcase";
 
 const AppRouter = () => {
   return (
@@ -15,6 +16,7 @@ const AppRouter = () => {
       <Route path={`/meeting/:meetingId`} element={<Meeting />} />
       <Route path={`/get-a-word`} element={<GetAWord />} />
       <Route path={`/markie`} element={<Markie />} />
+      <Route path={`/calendar-showcase`} element={<CalendarShowcase />} />
     </Routes>
   );
 };
