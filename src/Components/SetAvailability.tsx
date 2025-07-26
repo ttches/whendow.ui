@@ -57,6 +57,9 @@ const SetAvailability = ({
   }, [login.isSuccess]);
 
   const handleDateClick = (dateString: string) => {
+    const compare = compareDates(dateString);
+    if (!compare.isWithinRange(startDate, endDate)) return;
+
     const previouslyClicked = dates.includes(dateString);
     let nextAvailability: string[] = [];
     if (previouslyClicked) {
@@ -190,6 +193,7 @@ const SetAvailability = ({
             isInRange={isInRange}
             onDateClick={handleDateClick}
             selectedDates={dates}
+            availabilities={availabilities}
           />
         </StepContainer>
         <FloatingFooter

@@ -36,6 +36,7 @@ const ViewAvailability = ({
             isInRange={isInRange}
             onDateClick={handleDateClick}
             selectedDates={[selectedDate]}
+            availabilities={availabilities}
           />
         </StepContainer>
       </Container>
