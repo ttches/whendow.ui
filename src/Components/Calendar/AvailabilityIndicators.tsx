@@ -273,6 +273,41 @@ const TextureSquaresOverlay = styled.div<{ percentage: number }>`
   border-radius: 0 0 4px 4px;
 `;
 
+// Enhanced Texture with User Indicator - Shows teal dots in top 2 rows when user has availability
+const TextureDotsWithUserOverlay = styled.div<{ percentage: number }>`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: ${({ percentage }) =>
+    (percentage / 100) * 76}px; // Fill from bottom up, no minimum
+  background-image: radial-gradient(
+    circle at 2px 2px,
+    rgba(170, 43, 209, 0.6) 1px,
+    transparent 1px
+  );
+  background-size: 4px 4px;
+  pointer-events: none;
+  border-radius: 0 0 4px 4px;
+`;
+
+const TextureUserDotsOverlay = styled.div<{ percentage: number }>`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px; // Bottom 2 rows (4px each)
+  background-image: radial-gradient(
+    circle at 2px 2px,
+    rgba(20, 184, 166, 0.8) 1px,
+    // Teal color
+    transparent 1px
+  );
+  background-size: 4px 4px;
+  pointer-events: none;
+  border-radius: 0 0 4px 4px;
+`;
+
 // Grainy Height-Based Fill - Natural fade-out with mask
 const GrainyHeightOverlay = styled.div<{ percentage: number }>`
   position: absolute;
@@ -493,11 +528,13 @@ const GrainyShimmerOverlay = styled.div<{ percentage: number }>`
 type AvailabilityIndicatorProps = {
   type: IndicatorType;
   percentage: number;
+  hasCurrentUserAvailability?: boolean;
 };
 
 const AvailabilityIndicator = ({
   type,
   percentage,
+  hasCurrentUserAvailability = false,
 }: AvailabilityIndicatorProps) => {
   if (type === "none") return null;
 
@@ -550,9 +587,16 @@ const AvailabilityIndicator = ({
     }
 
     case "texture": {
-      // Height-based dots texture - only show if percentage > 0
+      // Enhanced height-based dots texture with user indicator
       if (percentage === 0) return null;
-      return <TextureDotsOverlay percentage={percentage} />;
+      return (
+        <>
+          <TextureDotsWithUserOverlay percentage={percentage} />
+          {hasCurrentUserAvailability && (
+            <TextureUserDotsOverlay percentage={percentage} />
+          )}
+        </>
+      );
     }
 
     case "texture-squares": {

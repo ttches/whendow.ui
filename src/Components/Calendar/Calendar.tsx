@@ -140,21 +140,23 @@ export type IndicatorType =
   | "texture-squares";
 
 type CalendarProps = {
+  availabilities?: MeetingAvailability[];
   initialMonth?: number;
   isInRange?: (dateString: string) => boolean;
   onDateClick: (dateString: string) => void;
   selectedDates: string[];
-  indicatorType?: IndicatorType;
-  availabilities?: MeetingAvailability[];
+  theme?: IndicatorType;
+  userName?: string;
 };
 
 const Calendar = ({
+  availabilities = [],
   initialMonth,
   isInRange = (_dateString: string) => false,
   onDateClick,
   selectedDates,
-  indicatorType = "texture",
-  availabilities = [],
+  theme = "texture",
+  userName,
 }: CalendarProps) => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(
     initialMonth || new Date().getMonth()
@@ -180,6 +182,14 @@ const Calendar = ({
     ];
 
     return Math.round((uniqueUsersForDate.length / totalGroupSize) * 100);
+  };
+
+  const hasCurrentUserAvailability = (dateString: string): boolean => {
+    if (!availabilities || !userName) return false;
+
+    return availabilities.some(
+      (a) => a.date === dateString && a.userName === userName
+    );
   };
 
   const thisMonthFirstDateTime = new Date(currentYear, currentMonthIndex, 1);
@@ -273,6 +283,7 @@ const Calendar = ({
         {dateArray.map((dateString) => {
           const date = new Date(dateString);
           const availabilityPercentage = getAvailabilityPercentage(dateString);
+          const userHasAvailability = hasCurrentUserAvailability(dateString);
           return (
             <DateCell
               key={dateString}
@@ -288,8 +299,9 @@ const Calendar = ({
                 {date.getDate()}
               </span>
               <AvailabilityIndicator
-                type={indicatorType}
+                hasCurrentUserAvailability={userHasAvailability}
                 percentage={availabilityPercentage}
+                type={theme}
               />
             </DateCell>
           );

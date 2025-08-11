@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import Calendar from "./Calendar/Calendar";
+import Calendar, { IndicatorType } from "./Calendar/Calendar";
 import { Container, StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
 import useUsername from "../hooks/useUsername";
@@ -14,6 +14,7 @@ type SetAvailabilityProps = {
   endDate: string;
   onSuccess: (availability: string[]) => void;
   startDate: string;
+  theme?: IndicatorType;
 };
 
 enum InputSteps {
@@ -28,6 +29,7 @@ const SetAvailability = ({
   endDate,
   onSuccess,
   startDate,
+  theme,
 }: SetAvailabilityProps) => {
   const usernameFromCookie = useUsername();
   const initialDates = availabilities
@@ -194,6 +196,7 @@ const SetAvailability = ({
             onDateClick={handleDateClick}
             selectedDates={dates}
             availabilities={availabilities}
+            theme={theme}
           />
         </StepContainer>
         <FloatingFooter

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Calendar, { IndicatorType } from "./Calendar/Calendar";
+import { IndicatorType } from "./Calendar/Calendar";
+import ViewAvailability from "./ViewAvailability";
 
 const mockAvailabilities = [
   { date: "2025/7/8", id: 1, meetingId: "showcase", userName: "alice" },
@@ -163,9 +164,9 @@ const CalendarShowcase = (_props: CalendarShowcaseProps) => {
     },
     {
       type: "texture" as IndicatorType,
-      title: "Height-Based Dots Texture",
+      title: "Height-Based Dots Texture (Enhanced)",
       description:
-        "Small dots texture that fills from bottom up - no effect when 0%",
+        "Small dots texture that fills from bottom up with teal dots in bottom 2 rows when current user has availability",
       prop: 'indicatorType="texture"',
     },
     {
@@ -186,13 +187,12 @@ const CalendarShowcase = (_props: CalendarShowcaseProps) => {
             <SectionTitle>{config.title}</SectionTitle>
             <Description>{config.description}</Description>
             <PropString>{config.prop}</PropString>
-            <Calendar
-              initialMonth={6}
-              isInRange={isInRange}
-              onDateClick={handleDateClick}
-              selectedDates={[selectedDate]}
-              indicatorType={config.type}
+            <ViewAvailability
+              startDate={"2025/7/1"}
+              endDate={"2025/7/31"}
               availabilities={mockAvailabilities}
+              theme={config.type}
+              userNameOverride="alice"
             />
           </CalendarSection>
         ))}
