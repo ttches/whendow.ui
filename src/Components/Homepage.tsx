@@ -11,13 +11,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(180deg, #1a0020 0%, #2a0033 100%);
+  background: linear-gradient(180deg, #2d2640 0%, #191831 100%);
   overflow: hidden;
 `;
 
 const TitleSection = styled.div`
   align-items: center;
-  background: linear-gradient(-45deg, #aa2bd1, #4b015e, #551665, #aa2bd1);
+  background: linear-gradient(-45deg, #d971d5, #252133, #191831, #d971d5);
   background-size: 400% 400%;
   border-radius: 0 0 7px 7px;
   display: flex;
@@ -25,16 +25,16 @@ const TitleSection = styled.div`
   justify-content: center;
   height: 140px;
   animation: ${gradientShift} 15s ease infinite;
-  box-shadow: 0 4px 20px rgba(170, 43, 209, 0.2);
+  box-shadow: 0 4px 20px rgba(217, 113, 213, 0.2);
 `;
 
 const Title = styled.h1`
-  color: white;
+  color: #e8e2f4;
   font-family: "copasetic";
   font-size: 64px;
   margin: 0;
   text-align: center;
-  text-shadow: 0 4px 12px rgba(170, 43, 209, 0.4);
+  text-shadow: 0 4px 12px rgba(217, 113, 213, 0.4);
 `;
 
 const ContentSection = styled.div`
@@ -44,8 +44,8 @@ const ContentSection = styled.div`
   padding: 24px 0;
   background: linear-gradient(
     180deg,
-    rgba(170, 43, 209, 0.1) 0%,
-    rgba(13, 123, 123, 0.1) 100%
+    rgba(217, 113, 213, 0.1) 0%,
+    rgba(159, 255, 255, 0.1) 100%
   );
   flex: 1;
 `;
@@ -71,7 +71,7 @@ const TextContainer = styled.div`
 `;
 
 const Description = styled.p`
-  color: #d8b9ff;
+  color: #2d2640;
   font-family: "simplifica";
   font-size: 24px;
   margin: 0 0 24px 0;
@@ -81,10 +81,10 @@ const Description = styled.p`
 
 const GetStartedButton = styled.button`
   align-items: center;
-  background-color: #aa2bd1;
+  background-color: #d971d5;
   border: 2px solid transparent;
   border-radius: 80px;
-  color: white;
+  color: #e8e2f4;
   cursor: pointer;
   display: flex;
   font-family: "simplifica";
@@ -95,7 +95,7 @@ const GetStartedButton = styled.button`
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    border-color: #d8b9ff;
+    border-color: #2d2640;
     transform: scale(1.02);
   }
 
@@ -112,24 +112,24 @@ const StepsContainer = styled.div`
 
 const Step = styled.div`
   align-items: center;
-  background: rgba(216, 185, 255, 0.1);
+  background: rgba(161, 150, 228, 0.1);
   border-radius: 16px;
   display: flex;
   padding: 16px;
-  border: 1px solid rgba(170, 43, 209, 0.2);
+  border: 1px solid rgba(217, 113, 213, 0.2);
   transition: background 0.2s ease;
 
   &:active {
-    background: rgba(216, 185, 255, 0.2);
-    border-color: rgba(170, 43, 209, 0.4);
+    background: rgba(161, 150, 228, 0.2);
+    border-color: rgba(217, 113, 213, 0.4);
   }
 `;
 
 const StepNumber = styled.div`
   align-items: center;
-  background-color: #aa2bd1;
+  background-color: #d971d5;
   border-radius: 50%;
-  color: white;
+  color: #e8e2f4;
   display: flex;
   font-family: "copasetic";
   font-size: 32px;
@@ -137,11 +137,11 @@ const StepNumber = styled.div`
   justify-content: center;
   margin-right: 16px;
   min-width: 48px;
-  box-shadow: 0 2px 8px rgba(170, 43, 209, 0.4);
+  box-shadow: 0 2px 8px rgba(217, 113, 213, 0.4);
 `;
 
 const StepText = styled.p`
-  color: #d8b9ff;
+  color: #2d2640;
   font-family: "simplifica";
   font-size: 24px;
   margin: 0;

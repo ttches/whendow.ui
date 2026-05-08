@@ -5,7 +5,7 @@ const Form = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: #d8b9ff;
+  background-color: #eab9ff;
   color: #4b015e;
   font-family: "copasetic";
   width: 100%;

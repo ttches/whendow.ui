@@ -8,7 +8,7 @@ const FooterContainer = styled.div`
   left: 0;
   right: 0;
   height: 84px;
-  background-color: #d8b9ff;
+  background-color: #eab9ff;
   border-radius: 80px;
   display: flex;
   justify-content: space-between;

@@ -76,8 +76,8 @@ const DateCell = styled.div`
   }
 
   &.disabled {
-    background-color: #4e3654;
-    border: 1px solid #4e3654;
+    background-color: #2b1231;
+    border: 1px solid #37173f;
     color: #a8a8a8;
   }
 
@@ -88,7 +88,7 @@ const DateCell = styled.div`
 
 const DayCell = styled.div`
   align-items: center;
-  background-color: #d8b9ff;
+  background-color: #eab9ff;
   color: #4b015e;
   cursor: default;
   display: flex;
@@ -120,7 +120,7 @@ const ChangeMonth = styled.h3`
 
 const MonthContainer = styled.div`
   align-items: center;
-  background-color: #d8b9ff;
+  background-color: #eab9ff;
   display: flex;
   height: 42px;
   justify-content: space-around;
@@ -159,7 +159,7 @@ const Calendar = ({
   userName,
 }: CalendarProps) => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(
-    initialMonth || new Date().getMonth()
+    initialMonth || new Date().getMonth(),
   );
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
@@ -172,7 +172,7 @@ const Calendar = ({
     if (!availabilities || totalGroupSize === 0) return 0;
 
     const availabilitiesForDate = availabilities.filter(
-      (a) => a.date === dateString
+      (a) => a.date === dateString,
     );
 
     if (availabilitiesForDate.length === 0) return 0;
@@ -188,7 +188,7 @@ const Calendar = ({
     if (!availabilities || !userName) return false;
 
     return availabilities.some(
-      (a) => a.date === dateString && a.userName === userName
+      (a) => a.date === dateString && a.userName === userName,
     );
   };
 
@@ -202,7 +202,7 @@ const Calendar = ({
   const previousMonthLastDateTime = new Date(
     currentYear,
     currentMonthIndex || 12,
-    0
+    0,
   );
   const lastDateOfPreviousMonth = previousMonthLastDateTime.getDate();
   const lastDayOfPreviousMonth = previousMonthLastDateTime.getDay();
@@ -210,7 +210,7 @@ const Calendar = ({
   const getDateArray = (
     firstDayOfMonth: number,
     lastDateOfMonth: number,
-    lastDateOfPreviousMonth: number
+    lastDateOfPreviousMonth: number,
   ) => {
     const previousMonthArray = new Array(firstDayOfMonth)
       .fill(0)
@@ -218,7 +218,7 @@ const Calendar = ({
         (_, i) =>
           `${currentMonthIndex !== 0 ? currentYear : currentYear - 1}/${
             currentMonthIndex || 12
-          }/${lastDateOfPreviousMonth - i}`
+          }/${lastDateOfPreviousMonth - i}`,
       )
       .reverse();
 
@@ -235,7 +235,7 @@ const Calendar = ({
         (_, i) =>
           `${currentMonthIndex !== 11 ? currentYear : currentYear + 1}/${
             (currentMonthIndex + 2) % 12 || 12
-          }/${i + 1}`
+          }/${i + 1}`,
       );
 
     return [...previousMonthArray, ...thisMonthArray, ...nextMonthArray];
@@ -265,7 +265,7 @@ const Calendar = ({
   const dateArray = getDateArray(
     firstDayOfMonth,
     lastDateOfMonth,
-    lastDateOfPreviousMonth
+    lastDateOfPreviousMonth,
   );
 
   return (
