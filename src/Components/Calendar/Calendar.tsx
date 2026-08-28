@@ -32,7 +32,12 @@ const CellsContainer = styled.div`
   width: 100%;
 `;
 
-const DateCell = styled.div`
+const DateCell = styled.div<{
+  $borderTop?: boolean;
+  $borderRight?: boolean;
+  $borderBottom?: boolean;
+  $borderLeft?: boolean;
+}>`
   align-items: center;
   background-color: #551665;
   border: 1px solid #601972;
@@ -68,11 +73,11 @@ const DateCell = styled.div`
     }
   }
 
-  &.is-in-range {
-    background-color: #601972;
-
-    /* border-bottom: 4px solid #20a2a254; */
-    /* border-bottom: 4px solid #aa2bd136; */
+  &.in-range, &.selected {
+    border-top: ${(p) => (p.$borderTop ? "3px solid #eab9ff" : "1px solid transparent")};
+    border-right: ${(p) => (p.$borderRight ? "3px solid #eab9ff" : "1px solid transparent")};
+    border-bottom: ${(p) => (p.$borderBottom ? "3px solid #eab9ff" : "1px solid transparent")};
+    border-left: ${(p) => (p.$borderLeft ? "3px solid #eab9ff" : "1px solid transparent")};
   }
 
   &.disabled {
@@ -268,6 +273,17 @@ const Calendar = ({
     lastDateOfPreviousMonth,
   );
 
+  const getSelectionBorders = (dateString: string, index: number) => {
+    if (selectedDates.length < 2 || !isInRange(dateString)) return {};
+    const col = index % 7;
+    return {
+      $borderTop: index < 7 || !isInRange(dateArray[index - 7]),
+      $borderBottom: index >= 35 || !isInRange(dateArray[index + 7]),
+      $borderLeft: col === 0 || !isInRange(dateArray[index - 1]),
+      $borderRight: col === 6 || !isInRange(dateArray[index + 1]),
+    };
+  };
+
   return (
     <CalendarContainer>
       <MonthContainer>
@@ -280,20 +296,22 @@ const Calendar = ({
         {daysOfWeek.map((day, i) => (
           <DayCell key={i}>{day}</DayCell>
         ))}
-        {dateArray.map((dateString) => {
+        {dateArray.map((dateString, index) => {
           const date = new Date(dateString);
           const availabilityPercentage = getAvailabilityPercentage(dateString);
           const userHasAvailability = hasCurrentUserAvailability(dateString);
+          const borders = getSelectionBorders(dateString, index);
           return (
             <DateCell
               key={dateString}
               className={classNames({
                 selected: selectedDates.includes(dateString),
+                "in-range": selectedDates.length >= 2 && isInRange(dateString) && !selectedDates.includes(dateString),
                 "out-of-month": date.getMonth() != currentMonthIndex,
-                // "is-in-range": isInRange(dateString),
                 disabled: !isInRange(dateString),
               })}
               onClick={getHandleDateCellClick(dateString)}
+              {...borders}
             >
               <span style={{ position: "relative", zIndex: 1 }}>
                 {date.getDate()}

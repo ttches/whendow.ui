@@ -21,7 +21,6 @@ enum InputSteps {
   None,
   Username,
   Passcode,
-  Submit,
 }
 
 const SetAvailability = ({
@@ -113,7 +112,7 @@ const SetAvailability = ({
     setAvailabilityMutation.mutate(
       {
         meetingId: meetingId!,
-        dates, // bugged, can set everyones availability, duplicates things
+        dates,
       },
       {
         onSuccess: () => onSuccess(dates),
@@ -121,7 +120,7 @@ const SetAvailability = ({
     );
   };
 
-  const handleUsernameNext = () => {
+  const handleUsernameNext = async () => {
     if (!usernameInput) return;
 
     const existingUser = availabilities.some(
@@ -134,7 +133,13 @@ const SetAvailability = ({
       return;
     }
 
-    setStep(InputSteps.Submit);
+    await login.mutateAsync({ username: usernameInput, meetingId: meetingId! });
+
+    if (login.isError) {
+      return;
+    }
+
+    handleSubmit();
   };
 
   const isButtonDisabled = () => {
@@ -148,14 +153,6 @@ const SetAvailability = ({
 
     if (step === InputSteps.Passcode) {
       return !passcodeInput;
-    }
-
-    if (step === InputSteps.Submit) {
-      const previousAvailability = availabilities.some(
-        (availability) => availability.userName === usernameFromCookie
-      );
-
-      return !dates.length && !previousAvailability;
     }
 
     return false;

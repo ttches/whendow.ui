@@ -4,7 +4,7 @@ import { storeUserDataForDevelopment } from "../../utilities/cookie";
 
 type LoginInput = {
   username: string;
-  passcode: string;
+  passcode?: string;
   meetingId: string;
 };
 
@@ -18,7 +18,7 @@ type LoginResponse = {
   };
 };
 
-const query = `mutation login($username: String!, $passcode: String!, $meetingId: UUID!) {
+const query = `mutation login($username: String!, $passcode: String, $meetingId: UUID!) {
   login(username: $username, passcode: $passcode, meetingId: $meetingId) {
     success
     username
