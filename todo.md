@@ -1,10 +1,3 @@
-set availability anonymous should
-username -> req check username on meetingId ->
-if exists, passcode enter
-else create
-
-if you think it's an improvement over the current code, submit could be added as a createmeeting step, and a useeffect could submit when the step is submit
-
 mobile scroll to bottom of screen when input is focussed
 
 android/windows fonts not working
@@ -22,4 +15,4 @@ MVP features
 - locked/finalized view: replace the calendar with a clean summary screen showing the winning date(s) front and center (no heatmap, no tap-to-inspect in this state)
 
 Post-MVP follow-ups
-- replace the owner sentinel-date trick (AvailabilityService.OwnerIdentificationDate) with a real OwnerPasscode column on Meeting, set + cookie the owner at creation, and drop the sentinel-date filtering in GetAvailabilityByMeetingId
+- identity (username + passcode) still isn't a first-class concept - it's piggybacked on Availability rows via a sentinel date (AvailabilityService.IdentityBootstrapDate), now shared by the owner and every participant via the Login upsert. Consider a real MeetingParticipant/identity table instead, so Availability only ever holds real marked-available days

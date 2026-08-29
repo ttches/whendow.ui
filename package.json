@@ -10,10 +10,13 @@
     "build": "vite build",
     "build-safe": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:visual": "playwright test -c playwright-ct.config.ts",
+    "test:visual:update": "playwright test -c playwright-ct.config.ts --update-snapshots"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.56.2",
+    "canvas-confetti": "^1.9.4",
     "classnames": "^2.5.1",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.0",
@@ -25,6 +28,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@playwright/experimental-ct-react": "1.61.0",
+    "@playwright/test": "1.61.0",
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/node": "^26.4.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",

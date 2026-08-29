@@ -14,6 +14,7 @@ export type Meeting = {
   name: string;
   owner: string;
   startDate: string;
+  winningDates: string[];
 };
 
 type GetMeetingByIdResponse = {
@@ -27,14 +28,17 @@ const query = `query getMeetingById($input: GetMeetingByIdInput!) {
     name
     endDate
     startDate
+    owner
+    locked
+    winningDates
   }
 }`;
 
-const QUERY_KEY = "GET_MEETING_BY_ID";
+export const GET_MEETING_BY_ID_QUERY_KEY = "GET_MEETING_BY_ID";
 
 const useGetMeetingById = (input: GetMeetingByIdInput) => {
   return useQuery({
-    queryKey: [QUERY_KEY, input.id],
+    queryKey: [GET_MEETING_BY_ID_QUERY_KEY, input.id],
     queryFn: async () => {
       return request<GetMeetingByIdResponse>(query, { input });
     },
