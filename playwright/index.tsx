@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import "../src/index.css";
 import { beforeMount } from "@playwright/experimental-ct-react/hooks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

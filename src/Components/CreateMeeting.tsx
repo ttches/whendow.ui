@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Calendar from "./Calendar/Calendar";
 import FloatingFooter from "./FloatingFooter";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useCreateMeeting from "../api/mutations/useCreateMeeting";
 import { compareDates } from "../utilities/dates";
 
@@ -35,12 +35,6 @@ const CreateMeeting = () => {
   const initialMonth = new Date().getMonth();
   const selectedDates = [startDate, endDate].filter(Boolean);
 
-  useEffect(() => {
-    if (step === CreateMeetingSteps.SelectDates && endDate) {
-      setStep(CreateMeetingSteps.CreateMeetingName);
-    }
-  }, [step, endDate]);
-
   const handleDateClick = (dateString: string) => {
     if (dateString === startDate) {
       setStartDate("");
@@ -64,6 +58,9 @@ const CreateMeeting = () => {
     }
 
     setEndDate(dateString);
+    if (step === CreateMeetingSteps.SelectDates) {
+      setStep(CreateMeetingSteps.CreateMeetingName);
+    }
     return;
   };
 

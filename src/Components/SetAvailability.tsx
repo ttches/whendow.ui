@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Calendar, { IndicatorType } from "./Calendar/Calendar";
 import { Container, StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
@@ -48,26 +48,19 @@ const SetAvailability = ({
   const login = useLogin();
   const setAvailabilityMutation = useSetAvailability();
 
-  useEffect(() => {
-    if (login.isSuccess) {
-      setStep(InputSteps.None);
-
-      const newDates = [...new Set([...dates, ...initialDates])];
-      setDates(newDates);
-    }
-  }, [login.isSuccess]);
+  const handleLoginSuccess = () => {
+    setStep(InputSteps.None);
+    setDates((current) => [...new Set([...current, ...initialDates])]);
+  };
 
   const handleDateClick = (dateString: string) => {
     const compare = compareDates(dateString);
     if (!compare.isWithinRange(startDate, endDate)) return;
 
     const previouslyClicked = dates.includes(dateString);
-    let nextAvailability: string[] = [];
-    if (previouslyClicked) {
-      nextAvailability = dates.filter((date) => date !== dateString);
-    } else {
-      nextAvailability = [...dates, dateString];
-    }
+    const nextAvailability = previouslyClicked
+      ? dates.filter((date) => date !== dateString)
+      : [...dates, dateString];
 
     setDates(nextAvailability);
   };
@@ -87,6 +80,8 @@ const SetAvailability = ({
       if (login.isError) {
         return;
       }
+
+      handleLoginSuccess();
     }
 
     handleSubmit();
@@ -139,6 +134,7 @@ const SetAvailability = ({
       return;
     }
 
+    handleLoginSuccess();
     handleSubmit();
   };
 
