@@ -68,15 +68,20 @@ button:focus-visible {
 
 @font-face {
   font-family: "simplifica";
-  src: local("simplifica"),
+  src:
+    url("assets/fonts/simplifica.woff2") format("woff2"),
     url("assets/fonts/simplifica.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "copasetic";
-  src: local("copasetic"), url("assets/fonts/copasetic.ttf") format("truetype");
+  src:
+    url("assets/fonts/copasetic.woff2") format("woff2"),
+    url("assets/fonts/copasetic.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
