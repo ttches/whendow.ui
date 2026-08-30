@@ -1,7 +1,8 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Calendar, { IndicatorType } from "./Calendar/Calendar";
 import { Container, StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
+import LoginModal from "./LoginModal";
 import PasscodeReminderModal from "./PasscodeReminderModal";
 import useUsername from "../hooks/useUsername";
 import useModal from "../hooks/useModal";
@@ -20,11 +21,7 @@ type SetAvailabilityProps = {
   theme?: IndicatorType;
 };
 
-enum InputSteps {
-  None,
-  Username,
-  Passcode,
-}
+type LoginStep = "username" | "passcode";
 
 const SetAvailability = ({
   availabilities,
@@ -34,6 +31,7 @@ const SetAvailability = ({
   theme,
 }: SetAvailabilityProps) => {
   const usernameFromCookie = useUsername();
+  const isLoggedIn = Boolean(usernameFromCookie);
   const initialDates = availabilities
     .filter((availability) => availability.userName === usernameFromCookie)
     .map((availability) => availability.date);
@@ -42,18 +40,33 @@ const SetAvailability = ({
   const [dates, setDates] = useState<string[]>(initialDates);
   const [usernameInput, setUsernameInput] = useState("");
   const [passcodeInput, setPasscodeInput] = useState("");
-  const [step, setStep] = useState(
-    usernameFromCookie ? InputSteps.None : InputSteps.Username
-  );
+  const [loginError, setLoginError] = useState("");
+  const [loginStep, setLoginStep] = useState<LoginStep>("username");
 
   console.log("dates", dates);
 
   const login = useLogin();
   const setAvailabilityMutation = useSetAvailability();
-  const { openModal, closeModal, Modal } = useModal();
+  const {
+    openModal: openLoginModal,
+    closeModal: closeLoginModal,
+    Modal: LoginModalOverlay,
+  } = useModal();
+  const {
+    openModal: openPasscodeReminder,
+    closeModal: closePasscodeReminder,
+    Modal: PasscodeReminderOverlay,
+  } = useModal();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      openLoginModal();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleLoginSuccess = () => {
-    setStep(InputSteps.None);
+    closeLoginModal();
     setDates((current) => [...new Set([...current, ...initialDates])]);
   };
 
@@ -69,34 +82,13 @@ const SetAvailability = ({
     setDates(nextAvailability);
   };
 
-  const handleNext = () => async () => {
-    if (step === InputSteps.Username) {
-      return handleUsernameNext();
-    }
-
-    if (step === InputSteps.Passcode) {
-      await login.mutateAsync({
-        username: usernameInput,
-        passcode: passcodeInput,
-        meetingId: meetingId!,
-      });
-
-      if (login.isError) {
-        return;
-      }
-
-      handleLoginSuccess();
-    }
-
-    handleSubmit();
-  };
-
   const handleBack = () => undefined;
 
   const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget?.value || "";
     const sanitizedValue = newValue.replace(/(\d+|\s|\W)/, "");
 
+    setLoginError("");
     setUsernameInput(sanitizedValue);
   };
 
@@ -104,6 +96,7 @@ const SetAvailability = ({
     const newValue = e.currentTarget?.value || "";
     const sanitizedValue = newValue.replace(/(\W)/, "-");
 
+    setLoginError("");
     setPasscodeInput(sanitizedValue);
   };
 
@@ -127,36 +120,54 @@ const SetAvailability = ({
     );
 
     if (existingUser) {
-      setStep(InputSteps.Passcode);
+      setLoginStep("passcode");
 
       return;
     }
 
-    await login.mutateAsync({ username: usernameInput, meetingId: meetingId! });
+    const result = await login.mutateAsync({
+      username: usernameInput,
+      meetingId: meetingId!,
+    });
 
-    if (login.isError) {
+    if (!result.data.login.success) {
+      setLoginError(result.data.login.error || "Something went wrong");
+
       return;
     }
 
     handleLoginSuccess();
-    openModal();
-    handleSubmit();
+    openPasscodeReminder();
   };
 
-  const isButtonDisabled = () => {
-    if (login.isPending || setAvailabilityMutation.isPending) {
-      return true;
+  const handlePasscodeNext = async () => {
+    const result = await login.mutateAsync({
+      username: usernameInput,
+      passcode: passcodeInput,
+      meetingId: meetingId!,
+    });
+
+    if (!result.data.login.success) {
+      setLoginError(result.data.login.error || "Incorrect passcode");
+
+      return;
     }
 
-    if (step === InputSteps.Username) {
-      return !usernameInput;
+    handleLoginSuccess();
+  };
+
+  const handleLoginModalSubmit = () => {
+    if (loginStep === "username") {
+      return handleUsernameNext();
     }
 
-    if (step === InputSteps.Passcode) {
-      return !passcodeInput;
-    }
+    return handlePasscodeNext();
+  };
 
-    return false;
+  const isLoginSubmitDisabled = () => {
+    if (login.isPending) return true;
+
+    return loginStep === "username" ? !usernameInput : !passcodeInput;
   };
 
   const isInRange = (dateString: string) => {
@@ -164,53 +175,46 @@ const SetAvailability = ({
     return compare.isWithinRange(startDate, endDate);
   };
 
-  const getInput = () => {
-    if (step === InputSteps.Username) {
-      return {
-        value: usernameInput,
-        onChange: handleUsernameChange,
-        placeholder: "Username",
-      };
-    }
-
-    if (step === InputSteps.Passcode) {
-      return {
-        value: passcodeInput,
-        onChange: handlePasscodeChange,
-        placeholder: "Passcode",
-      };
-    }
-
-    return undefined;
-  };
-
   return (
     <div>
-      <Container>
-        <StepContainer>
-          <Calendar
-            initialMonth={new Date(startDate).getMonth()}
-            isInRange={isInRange}
-            onDateClick={handleDateClick}
-            selectedDates={dates}
-            availabilities={availabilities}
-            theme={theme}
+      {isLoggedIn && (
+        <Container>
+          <StepContainer>
+            <Calendar
+              initialMonth={new Date(startDate).getMonth()}
+              isInRange={isInRange}
+              onDateClick={handleDateClick}
+              selectedDates={dates}
+              availabilities={availabilities}
+              theme={theme}
+            />
+          </StepContainer>
+          <FloatingFooter
+            nextDisabled={setAvailabilityMutation.isPending}
+            onNext={() => handleSubmit}
+            onBack={handleBack}
+            text={usernameFromCookie || usernameInput}
           />
-        </StepContainer>
-        <FloatingFooter
-          nextDisabled={isButtonDisabled()}
-          onNext={handleNext}
-          onBack={handleBack}
-          text={usernameFromCookie || usernameInput}
-          input={getInput()}
+        </Container>
+      )}
+      <LoginModalOverlay>
+        <LoginModal
+          errorMessage={loginError}
+          onPasscodeChange={handlePasscodeChange}
+          onSubmit={handleLoginModalSubmit}
+          onUsernameChange={handleUsernameChange}
+          passcodeInput={passcodeInput}
+          step={loginStep}
+          submitDisabled={isLoginSubmitDisabled()}
+          usernameInput={usernameInput}
         />
-      </Container>
-      <Modal>
+      </LoginModalOverlay>
+      <PasscodeReminderOverlay>
         <PasscodeReminderModal
           passcode={getPasscodeFromCookie(meetingId!)}
-          onClose={closeModal}
+          onClose={closePasscodeReminder}
         />
-      </Modal>
+      </PasscodeReminderOverlay>
     </div>
   );
 };

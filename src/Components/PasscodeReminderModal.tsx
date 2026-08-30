@@ -3,8 +3,7 @@ import styled from "styled-components";
 
 const ContentOverlay = styled.div`
   align-items: center;
-  backdrop-filter: blur(8px);
-  background: rgba(255, 255, 255, 0.1);
+  background-color: #eab9ff;
   border-radius: 24px;
   display: flex;
   flex-direction: column;
@@ -15,21 +14,19 @@ const ContentOverlay = styled.div`
 `;
 
 const Title = styled.h1`
-  color: white;
+  color: #4b015e;
   font-family: "copasetic";
   font-size: 32px;
   margin: 0 0 16px 0;
   text-align: center;
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 `;
 
 const Description = styled.p`
-  color: white;
+  color: #4b015e;
   font-family: "simplifica";
   font-size: 20px;
   margin: 0 0 32px 0;
   text-align: center;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const PasscodeRow = styled.div`
@@ -66,7 +63,7 @@ const ShowButton = styled.button`
   padding: 8px 12px;
 
   &:hover {
-    background-color: #eab9ff;
+    background-color: white;
   }
 `;
 
@@ -86,7 +83,7 @@ const CopyButton = styled.button`
 `;
 
 const CopiedLabel = styled.span`
-  color: white;
+  color: #4b015e;
   font-family: "simplifica";
   font-size: 16px;
   height: 20px;
@@ -95,26 +92,21 @@ const CopiedLabel = styled.span`
 
 const ContinueButton = styled.button`
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: none;
-  border-radius: 80px;
-  color: #4b015e;
+  background-color: #aa2bd1;
+  border: 3px solid #4b015e;
+  color: white;
   cursor: pointer;
+  border-radius: 80px;
   display: flex;
   font-family: "simplifica";
   font-size: 32px;
   height: 64px;
   justify-content: center;
-  transition: all 0.2s ease-in-out;
   width: 100%;
 
   &:hover {
-    background-color: white;
-    transform: scale(1.05);
-  }
-
-  &:active {
-    transform: scale(0.98);
+    background-color: #0d7b7b;
+    border-color: #aa2bd1;
   }
 `;
 
