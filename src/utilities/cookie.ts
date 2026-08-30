@@ -14,6 +14,14 @@ const getUserNameFromCookie = (meetingId: string) => {
   return decodedCookie.split(":")[0];
 };
 
+const getPasscodeFromCookie = (meetingId: string) => {
+  const cookieName = `when-${meetingId}`;
+  const cookie = getCookie(cookieName) || "";
+  const decodedCookie = atob(decodeURIComponent(cookie));
+
+  return decodedCookie.split(":")[1];
+};
+
 const getUsername = (meetingId: string) => {
   if (import.meta.env.DEV) {
     return localStorage.getItem(`user-${meetingId}`);
@@ -30,6 +38,7 @@ const storeUserDataForDevelopment = (meetingId: string, username: string) => {
 
 export {
   getCookie,
+  getPasscodeFromCookie,
   getUserNameFromCookie,
   getUsername,
   storeUserDataForDevelopment,

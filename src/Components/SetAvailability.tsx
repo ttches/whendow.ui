@@ -2,12 +2,15 @@ import { ChangeEvent, useState } from "react";
 import Calendar, { IndicatorType } from "./Calendar/Calendar";
 import { Container, StepContainer } from "./CreateMeeting";
 import FloatingFooter from "./FloatingFooter";
+import PasscodeReminderModal from "./PasscodeReminderModal";
 import useUsername from "../hooks/useUsername";
+import useModal from "../hooks/useModal";
 import useLogin from "../api/mutations/useLogin";
 import useSetAvailability from "../api/mutations/useSetAvailability";
 import { useParams } from "react-router-dom";
 import { MeetingAvailability } from "../api/queries/getAvailabilitiesByMeetingId";
 import { compareDates } from "../utilities/dates";
+import { getPasscodeFromCookie } from "../utilities/cookie";
 
 type SetAvailabilityProps = {
   availabilities: MeetingAvailability[];
@@ -47,6 +50,7 @@ const SetAvailability = ({
 
   const login = useLogin();
   const setAvailabilityMutation = useSetAvailability();
+  const { openModal, closeModal, Modal } = useModal();
 
   const handleLoginSuccess = () => {
     setStep(InputSteps.None);
@@ -135,6 +139,7 @@ const SetAvailability = ({
     }
 
     handleLoginSuccess();
+    openModal();
     handleSubmit();
   };
 
@@ -200,6 +205,12 @@ const SetAvailability = ({
           input={getInput()}
         />
       </Container>
+      <Modal>
+        <PasscodeReminderModal
+          passcode={getPasscodeFromCookie(meetingId!)}
+          onClose={closeModal}
+        />
+      </Modal>
     </div>
   );
 };

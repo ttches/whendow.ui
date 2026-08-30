@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   getCookie,
+  getPasscodeFromCookie,
   getUserNameFromCookie,
   getUsername,
   storeUserDataForDevelopment,
@@ -26,6 +27,16 @@ describe("getUserNameFromCookie", () => {
     document.cookie = `when-${meetingId}=${encoded}`;
 
     expect(getUserNameFromCookie(meetingId)).toBe("alice");
+  });
+});
+
+describe("getPasscodeFromCookie", () => {
+  it("decodes the passcode stored after the ':' separator", () => {
+    const meetingId = "meeting-789";
+    const encoded = encodeURIComponent(btoa("alice:some-token"));
+    document.cookie = `when-${meetingId}=${encoded}`;
+
+    expect(getPasscodeFromCookie(meetingId)).toBe("some-token");
   });
 });
 
