@@ -9,6 +9,7 @@ import { compareDates } from "../utilities/dates";
 type SelectWinningDatesProps = {
   availabilities: MeetingAvailability[];
   endDate: string;
+  initialWinningDates?: string[];
   meetingId: string;
   onSuccess: () => void;
   startDate: string;
@@ -17,11 +18,13 @@ type SelectWinningDatesProps = {
 const SelectWinningDates = ({
   availabilities,
   endDate,
+  initialWinningDates = [],
   meetingId,
   onSuccess,
   startDate,
 }: SelectWinningDatesProps) => {
-  const [winningDates, setWinningDates] = useState<string[]>([]);
+  const [winningDates, setWinningDates] =
+    useState<string[]>(initialWinningDates);
   const lockMeeting = useLockMeeting();
 
   const isInRange = (dateString: string) => {

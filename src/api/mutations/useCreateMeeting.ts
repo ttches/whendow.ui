@@ -17,7 +17,6 @@ type CreateMeetingResponse = {
 
 export type MeetingFromResponse = {
   endDate: string;
-  locked: boolean;
   name: string;
   owner: string;
   startDate: string;
@@ -28,7 +27,6 @@ export type MeetingFromResponse = {
 const query = `mutation createMeeting($input: CreateMeetingInput!) {
   createMeeting(input: $input) {
     endDate
-    locked
     name
     owner
     startDate

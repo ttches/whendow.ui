@@ -10,7 +10,6 @@ type UnlockMeetingResponse = {
   data: {
     unlockMeeting: {
       id: string;
-      locked: boolean;
       winningDates: string[];
     };
   };
@@ -19,7 +18,6 @@ type UnlockMeetingResponse = {
 const mutation = `mutation unlockMeeting($meetingId: UUID!) {
   unlockMeeting(meetingId: $meetingId) {
     id
-    locked
     winningDates
   }
 }`;

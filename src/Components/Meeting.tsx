@@ -5,7 +5,7 @@ import useGetMeetingById from "../api/queries/getMeetingById";
 import useAvailabilitiesByMeetingId from "../api/queries/getAvailabilitiesByMeetingId";
 import ViewAvailability from "./ViewAvailability";
 import SelectWinningDates from "./SelectWinningDates";
-import LockedMeeting from "./LockedMeeting";
+import WinningDatesSummary from "./WinningDatesSummary";
 import LoginFlow from "./LoginFlow";
 import useUsername from "../hooks/useUsername";
 import { MeetingName } from "./Meeting.styles";
@@ -24,9 +24,10 @@ const Meeting = () => {
   const { data: availabilities = [] } = useAvailabilitiesByMeetingId(meetingId);
   const usernameFromCookie = useUsername();
 
-  const { name, startDate, endDate, owner, locked, winningDates } = meeting || {};
+  const { name, startDate, endDate, owner, winningDates = [] } = meeting || {};
   const isLoggedIn = Boolean(usernameFromCookie);
   const isOwner = Boolean(owner) && owner === usernameFromCookie;
+  const hasWinningDates = winningDates.length > 0;
 
   const onSetAvailabilitySuccess = () => {
     setCalendarMode(CalendarMode.View);
@@ -64,49 +65,45 @@ const Meeting = () => {
   return (
     <div>
       <MeetingName>{name}</MeetingName>
-      {locked ? (
-        <LockedMeeting
-          availabilities={availabilities}
-          endDate={endDate!}
+      {hasWinningDates && (
+        <WinningDatesSummary
           isOwner={isOwner}
           meetingId={meetingId}
-          startDate={startDate!}
-          winningDates={winningDates || []}
+          winningDates={winningDates}
         />
-      ) : (
-        <>
-          <button onClick={() => toggleCalendarMode()}>{getButtonContent()}</button>
-          {isOwner && calendarMode === CalendarMode.View && (
-            <button onClick={() => setCalendarMode(CalendarMode.SelectWinners)}>
-              Pick Winning Date(s)
-            </button>
-          )}
-          {calendarMode === CalendarMode.View && (
-            <ViewAvailability
-              availabilities={availabilities}
-              endDate={endDate!}
-              startDate={startDate!}
-            />
-          )}
-          {calendarMode === CalendarMode.SetAvailability && (
-            <SetAvailability
-              availabilities={availabilities}
-              endDate={endDate!}
-              onCancel={() => setCalendarMode(CalendarMode.View)}
-              onSuccess={onSetAvailabilitySuccess}
-              startDate={startDate!}
-            />
-          )}
-          {calendarMode === CalendarMode.SelectWinners && (
-            <SelectWinningDates
-              availabilities={availabilities}
-              endDate={endDate!}
-              meetingId={meetingId}
-              onSuccess={() => setCalendarMode(CalendarMode.View)}
-              startDate={startDate!}
-            />
-          )}
-        </>
+      )}
+      <button onClick={() => toggleCalendarMode()}>{getButtonContent()}</button>
+      {isOwner && calendarMode === CalendarMode.View && (
+        <button onClick={() => setCalendarMode(CalendarMode.SelectWinners)}>
+          {hasWinningDates ? "Change Winning Date(s)" : "Pick Winning Date(s)"}
+        </button>
+      )}
+      {calendarMode === CalendarMode.View && (
+        <ViewAvailability
+          availabilities={availabilities}
+          endDate={endDate!}
+          startDate={startDate!}
+          winningDates={winningDates}
+        />
+      )}
+      {calendarMode === CalendarMode.SetAvailability && (
+        <SetAvailability
+          availabilities={availabilities}
+          endDate={endDate!}
+          onCancel={() => setCalendarMode(CalendarMode.View)}
+          onSuccess={onSetAvailabilitySuccess}
+          startDate={startDate!}
+        />
+      )}
+      {calendarMode === CalendarMode.SelectWinners && (
+        <SelectWinningDates
+          availabilities={availabilities}
+          endDate={endDate!}
+          initialWinningDates={winningDates}
+          meetingId={meetingId}
+          onSuccess={() => setCalendarMode(CalendarMode.View)}
+          startDate={startDate!}
+        />
       )}
       {isLoggingIn && (
         <LoginFlow

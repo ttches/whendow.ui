@@ -67,6 +67,7 @@ type CalendarProps = {
   showRangeOutline?: boolean;
   theme?: IndicatorType;
   userName?: string;
+  winningDates?: string[];
 };
 
 const Calendar = ({
@@ -78,6 +79,7 @@ const Calendar = ({
   showRangeOutline = false,
   theme = "texture",
   userName,
+  winningDates = [],
 }: CalendarProps) => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(
     initialMonth ?? new Date().getMonth(),
@@ -242,6 +244,7 @@ const Calendar = ({
                   !selectedDates.includes(dateString),
                 "out-of-month": date.getMonth() != currentMonthIndex,
                 disabled: !isInRange(dateString),
+                winning: winningDates.includes(dateString),
               })}
               onClick={getHandleDateCellClick(dateString)}
               {...borders}

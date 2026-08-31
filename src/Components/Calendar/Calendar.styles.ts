@@ -35,7 +35,8 @@ export const DateCell = styled.div<{
     background-color: #481154;
   }
 
-  &.selected {
+  &.selected,
+  &.winning {
     &:after {
       content: "";
       display: block;
@@ -52,6 +53,10 @@ export const DateCell = styled.div<{
     &:hover {
       background-color: #0d7b7b;
     }
+  }
+
+  &.winning {
+    background-color: #0d7b7b;
   }
 
   &.in-range,

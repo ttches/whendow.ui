@@ -11,7 +11,6 @@ type LockMeetingResponse = {
   data: {
     lockMeeting: {
       id: string;
-      locked: boolean;
       winningDates: string[];
     };
   };
@@ -20,7 +19,6 @@ type LockMeetingResponse = {
 const mutation = `mutation lockMeeting($input: LockMeetingInput!) {
   lockMeeting(input: $input) {
     id
-    locked
     winningDates
   }
 }`;

@@ -13,6 +13,7 @@ type ViewAvailabilityProps = {
   startDate: string;
   theme?: IndicatorType;
   userNameOverride?: string;
+  winningDates?: string[];
 };
 
 const ViewAvailability = ({
@@ -21,6 +22,7 @@ const ViewAvailability = ({
   endDate,
   theme,
   userNameOverride,
+  winningDates,
 }: ViewAvailabilityProps) => {
   const [selectedDate, setSelectedDate] = useState("");
   const { Modal, closeModal, openModal } = useModal();
@@ -70,6 +72,7 @@ const ViewAvailability = ({
             availabilities={availabilities}
             theme={theme}
             userName={userName}
+            winningDates={winningDates}
           />
         </StepContainer>
       </Container>

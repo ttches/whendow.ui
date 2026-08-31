@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Meeting from "./Meeting";
 import { julyIso } from "../test/calendarDates";
 
-test("renders the default view for an unlocked meeting", async ({ mount, page }) => {
+test("renders the default view for a meeting without winning dates", async ({ mount, page }) => {
   await page.route("**/graphql/**", async (route) => {
     const { query } = route.request().postDataJSON();
 
@@ -16,7 +16,6 @@ test("renders the default view for an unlocked meeting", async ({ mount, page })
               startDate: julyIso(1),
               endDate: julyIso(31),
               owner: "alice",
-              locked: false,
               winningDates: [],
             },
           },

@@ -10,7 +10,6 @@ export type Meeting = {
   createdAt: string;
   endDate: string;
   id: string;
-  locked: boolean;
   name: string;
   owner: string;
   startDate: string;
@@ -29,7 +28,6 @@ const query = `query getMeetingById($input: GetMeetingByIdInput!) {
     endDate
     startDate
     owner
-    locked
     winningDates
   }
 }`;

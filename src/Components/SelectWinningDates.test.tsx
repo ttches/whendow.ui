@@ -11,7 +11,7 @@ const mockedRequest = vi.mocked(request);
 describe("SelectWinningDates", () => {
   beforeEach(() => {
     mockedRequest.mockReset().mockResolvedValue({
-      data: { lockMeeting: { id: "meeting-1", locked: true, winningDates: [] } },
+      data: { lockMeeting: { id: "meeting-1", winningDates: [] } },
     });
 
     vi.useFakeTimers();
