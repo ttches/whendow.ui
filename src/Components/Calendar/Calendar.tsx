@@ -189,7 +189,7 @@ const Calendar = ({
   );
 
   const hideRangeOutline = (dateString: string) =>
-    !showRangeOutline || selectedDates.length < 2 || !isInRange(dateString);
+    !showRangeOutline || !isInRange(dateString);
 
   const getSelectionBorders = (dateString: string, index: number) => {
     if (hideRangeOutline(dateString)) return {};

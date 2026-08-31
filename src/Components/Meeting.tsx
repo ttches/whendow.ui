@@ -92,6 +92,7 @@ const Meeting = () => {
             <SetAvailability
               availabilities={availabilities}
               endDate={endDate!}
+              onCancel={() => setCalendarMode(CalendarMode.View)}
               onSuccess={onSetAvailabilitySuccess}
               startDate={startDate!}
             />

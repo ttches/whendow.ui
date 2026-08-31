@@ -8,6 +8,7 @@ import {
 } from "./FloatingFooter.styles";
 
 type FloatingFooterProps = {
+  backLabel?: string;
   nextDisabled?: boolean;
   onNext: () => (() => void) | undefined;
   onBack: () => (() => void) | undefined;
@@ -20,6 +21,7 @@ type FloatingFooterProps = {
 };
 
 const FloatingFooter = ({
+  backLabel = "<",
   nextDisabled,
   onNext,
   onBack,
@@ -50,7 +52,7 @@ const FloatingFooter = ({
           onClick={backHandler}
           disabled={!backHandler}
         >
-          {"<"}
+          {backLabel}
         </NavigationButton>
       </ButtonContainer>
       <TextContainer>

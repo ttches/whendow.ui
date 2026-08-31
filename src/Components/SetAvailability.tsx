@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Calendar, { IndicatorType } from "./Calendar/Calendar";
 import { Container, StepContainer } from "./CreateMeeting.styles";
 import FloatingFooter from "./FloatingFooter";
@@ -11,6 +11,7 @@ import { compareDates } from "../utilities/dates";
 type SetAvailabilityProps = {
   availabilities: MeetingAvailability[];
   endDate: string;
+  onCancel?: () => void;
   onSuccess: (availability: string[]) => void;
   startDate: string;
   theme?: IndicatorType;
@@ -19,6 +20,7 @@ type SetAvailabilityProps = {
 const SetAvailability = ({
   availabilities,
   endDate,
+  onCancel,
   onSuccess,
   startDate,
   theme,
@@ -33,6 +35,10 @@ const SetAvailability = ({
 
   const setAvailabilityMutation = useSetAvailability();
 
+  useEffect(() => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  }, []);
+
   const handleDateClick = (dateString: string) => {
     const compare = compareDates(dateString);
     if (!compare.isWithinRange(startDate, endDate)) return;
@@ -45,7 +51,7 @@ const SetAvailability = ({
     setDates(nextAvailability);
   };
 
-  const handleBack = () => undefined;
+  const handleBack = () => onCancel;
 
   const handleSubmit = () => {
     setAvailabilityMutation.mutate(
@@ -74,13 +80,15 @@ const SetAvailability = ({
           selectedDates={dates}
           availabilities={availabilities}
           theme={theme}
+          showRangeOutline
         />
       </StepContainer>
       <FloatingFooter
+        backLabel="×"
         nextDisabled={setAvailabilityMutation.isPending}
         onNext={() => handleSubmit}
         onBack={handleBack}
-        text={usernameFromCookie}
+        text="Update"
       />
     </Container>
   );
