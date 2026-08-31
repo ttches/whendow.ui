@@ -1,15 +1,9 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useModal from "../hooks/useModal";
 import {
-  AnimatedBackdrop,
-  CausticLayer,
-  CausticLayerAlt,
   ContentOverlay,
   Description,
   GetStartedButton,
-  LightRays,
-  Scene,
+  PageContainer,
   Step,
   StepNumber,
   StepsContainer,
@@ -19,22 +13,9 @@ import {
 
 const Homepage = () => {
   const navigate = useNavigate();
-  const { Modal: HomepageModal, isOpen, openModal } = useModal();
-
-  useEffect(() => {
-    openModal();
-  }, []);
-
-  if (!isOpen) return null;
 
   return (
-    <HomepageModal>
-      <Scene>
-        <AnimatedBackdrop />
-        <LightRays />
-        <CausticLayer />
-        <CausticLayerAlt />
-      </Scene>
+    <PageContainer>
       <ContentOverlay>
         <Title>woahbundie</Title>
         <Description>Find a date to fit your group.</Description>
@@ -56,7 +37,7 @@ const Homepage = () => {
           </Step>
         </StepsContainer>
       </ContentOverlay>
-    </HomepageModal>
+    </PageContainer>
   );
 };
 

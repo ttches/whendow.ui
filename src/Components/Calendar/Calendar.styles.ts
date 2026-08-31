@@ -4,10 +4,6 @@ export const CalendarContainer = styled.div`
   border-radius: 10px;
   overflow: hidden;
   user-select: none;
-
-  @media (min-width: 768px) {
-    border: 3px solid #eab9ff;
-  }
 `;
 
 export const CellsContainer = styled.div`

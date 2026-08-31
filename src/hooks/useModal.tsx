@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const Overlay = styled.div`
   align-items: center;
-  background: linear-gradient(135deg, #aa2bd1 0%, #0d7b7b 100%);
+  background-color: rgba(22, 2, 34, 0.45);
   display: flex;
   height: 100dvh;
   justify-content: center;
