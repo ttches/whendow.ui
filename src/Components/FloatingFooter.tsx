@@ -33,10 +33,8 @@ const FloatingFooter = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (input && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
+    inputRef.current?.focus();
+  }, [input?.placeholder]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && nextHandler && !nextDisabled) {
