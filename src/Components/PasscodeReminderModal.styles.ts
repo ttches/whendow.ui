@@ -51,7 +51,7 @@ export const PasscodeRow = styled.div<{ $revealed: boolean; $copied: boolean }>`
   gap: 12px;
   justify-content: center;
   margin-bottom: 32px;
-  padding: 16px 20px;
+  padding: 16px 8px;
   width: calc(100% - 24px);
 
   ${({ $revealed }) => {
@@ -77,7 +77,7 @@ export const PasscodeText = styled.span`
   color: #4b015e;
   flex-grow: 1;
   font-family: "copasetic";
-  font-size: 24px;
+  font-size: 18px;
   overflow-wrap: anywhere;
   text-align: center;
 `;

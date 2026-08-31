@@ -12,11 +12,6 @@ export const PageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   min-height: 100dvh;
-
-  @media (min-width: 768px) {
-    display: block;
-    min-height: auto;
-  }
 `;
 
 export const StepContainer = styled.div`

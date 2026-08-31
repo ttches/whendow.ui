@@ -6,6 +6,7 @@ import useAvailabilitiesByMeetingId from "../api/queries/getAvailabilitiesByMeet
 import ViewAvailability from "./ViewAvailability";
 import SelectWinningDates from "./SelectWinningDates";
 import LockedMeeting from "./LockedMeeting";
+import LoginFlow from "./LoginFlow";
 import useUsername from "../hooks/useUsername";
 import { MeetingName } from "./Meeting.styles";
 
@@ -17,12 +18,14 @@ enum CalendarMode {
 
 const Meeting = () => {
   const [calendarMode, setCalendarMode] = useState(CalendarMode.View);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const meetingId = useParams().meetingId!;
   const { data: meeting, isLoading } = useGetMeetingById({ id: meetingId });
   const { data: availabilities = [] } = useAvailabilitiesByMeetingId(meetingId);
   const usernameFromCookie = useUsername();
 
   const { name, startDate, endDate, owner, locked, winningDates } = meeting || {};
+  const isLoggedIn = Boolean(usernameFromCookie);
   const isOwner = Boolean(owner) && owner === usernameFromCookie;
 
   const onSetAvailabilitySuccess = () => {
@@ -30,17 +33,17 @@ const Meeting = () => {
   };
 
   const toggleCalendarMode = () => {
-    if (calendarMode === CalendarMode.SelectWinners) {
+    if (calendarMode !== CalendarMode.View) {
       setCalendarMode(CalendarMode.View);
       return;
     }
 
-    const nextMode =
-      calendarMode === CalendarMode.View
-        ? CalendarMode.SetAvailability
-        : CalendarMode.View;
+    if (!isLoggedIn) {
+      setIsLoggingIn(true);
+      return;
+    }
 
-    setCalendarMode(nextMode);
+    setCalendarMode(CalendarMode.SetAvailability);
   };
 
   const getButtonContent = () => {
@@ -103,6 +106,13 @@ const Meeting = () => {
             />
           )}
         </>
+      )}
+      {isLoggingIn && (
+        <LoginFlow
+          availabilities={availabilities}
+          meetingId={meetingId}
+          onClose={() => setIsLoggingIn(false)}
+        />
       )}
     </div>
   );
