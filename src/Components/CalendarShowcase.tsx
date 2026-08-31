@@ -38,7 +38,7 @@ const mockAvailabilities = [
 const ShowcaseContainer = styled.div`
   padding: 20px;
   background-color: #f0f0f0;
-  min-height: 100vh;
+  min-height: 100dvh;
 `;
 
 const Title = styled.h1`

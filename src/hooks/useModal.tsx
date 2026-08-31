@@ -5,7 +5,7 @@ const Overlay = styled.div`
   align-items: center;
   background: linear-gradient(135deg, #aa2bd1 0%, #0d7b7b 100%);
   display: flex;
-  height: 100vh;
+  height: 100dvh;
   justify-content: center;
   left: 0;
   position: fixed;

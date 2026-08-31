@@ -73,11 +73,16 @@ const DateCell = styled.div<{
     }
   }
 
-  &.in-range, &.selected {
-    border-top: ${(p) => (p.$borderTop ? "3px solid #eab9ff" : "1px solid transparent")};
-    border-right: ${(p) => (p.$borderRight ? "3px solid #eab9ff" : "1px solid transparent")};
-    border-bottom: ${(p) => (p.$borderBottom ? "3px solid #eab9ff" : "1px solid transparent")};
-    border-left: ${(p) => (p.$borderLeft ? "3px solid #eab9ff" : "1px solid transparent")};
+  &.in-range,
+  &.selected {
+    border-top: ${(p) =>
+      p.$borderTop ? "3px solid #eab9ff" : "1px solid transparent"};
+    border-right: ${(p) =>
+      p.$borderRight ? "3px solid #eab9ff" : "1px solid transparent"};
+    border-bottom: ${(p) =>
+      p.$borderBottom ? "3px solid #eab9ff" : "1px solid transparent"};
+    border-left: ${(p) =>
+      p.$borderLeft ? "3px solid #eab9ff" : "1px solid transparent"};
   }
 
   &.disabled {
@@ -111,24 +116,65 @@ const Month = styled.h3`
   user-select: none;
 `;
 
-const ChangeMonth = styled.h3`
+const ChangeMonth = styled.button`
+  align-items: center;
+  background-color: #aa2bd1;
+  border: 3px solid #4b015e;
+  color: white;
   cursor: pointer;
-  color: #551665;
-  font-family: "simplifica";
-  font-size: 36px;
-  margin: 0px;
+  display: flex;
+  height: 36px;
+  width: 44px;
+  justify-content: center;
+  padding: 0px;
+  transition:
+    transform 0.15s ease-in-out,
+    background-color 0.15s ease-in-out;
   user-select: none;
+
+  &.left {
+    border-radius: 80px 20px 20px 80px;
+  }
+
+  &.right {
+    border-radius: 20px 80px 80px 20px;
+  }
+
   &:hover {
-    color: #20a2a2;
+    background-color: #0d7b7b;
+    border-color: #aa2bd1;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 `;
+
+const ChevronIcon = ({ direction }: { direction: "left" | "right" }) => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    style={{ transform: direction === "right" ? "rotate(180deg)" : undefined }}
+  >
+    <path
+      d="M15 6l-6 6 6 6"
+      stroke="currentColor"
+      strokeWidth={3}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 const MonthContainer = styled.div`
   align-items: center;
   background-color: #eab9ff;
   display: flex;
-  height: 42px;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 16px 10px;
   width: 100%;
 `;
 
@@ -292,9 +338,13 @@ const Calendar = ({
   return (
     <CalendarContainer>
       <MonthContainer>
-        <ChangeMonth onClick={handleBackMonth}>{"<"}</ChangeMonth>
+        <ChangeMonth className="left" onClick={handleBackMonth}>
+          <ChevronIcon direction="left" />
+        </ChangeMonth>
         <Month>{`${months[currentMonthIndex]}`}</Month>
-        <ChangeMonth onClick={handleNextMonth}>{">"}</ChangeMonth>
+        <ChangeMonth className="right" onClick={handleNextMonth}>
+          <ChevronIcon direction="right" />
+        </ChangeMonth>
       </MonthContainer>
 
       <CellsContainer>

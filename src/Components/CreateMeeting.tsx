@@ -15,6 +15,19 @@ export const Container = styled.div`
   max-width: 550px;
 `;
 
+const PageContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100dvh;
+
+  @media (min-width: 768px) {
+    display: block;
+    min-height: auto;
+  }
+`;
+
 export const StepContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -189,7 +202,7 @@ const CreateMeeting = () => {
   };
 
   return (
-    <div>
+    <PageContainer>
       <Container>
         <StepContainer>
           <Calendar
@@ -214,7 +227,7 @@ const CreateMeeting = () => {
           onClose={handlePasscodeReminderClose}
         />
       </PasscodeReminderOverlay>
-    </div>
+    </PageContainer>
   );
 };
 

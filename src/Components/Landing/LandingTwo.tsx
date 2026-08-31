@@ -6,7 +6,7 @@ const Container = styled.div`
   background: linear-gradient(135deg, #aa2bd1 0%, #0d7b7b 100%);
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   position: relative;
   overflow: hidden;
 `;
