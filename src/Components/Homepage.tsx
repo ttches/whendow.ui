@@ -142,8 +142,10 @@ const CausticLayerAlt = styled(CausticLayer)`
 
 const ContentOverlay = styled.div`
   align-items: center;
-  background-color: #eab9ff;
+  background-color: rgba(234, 185, 255, 0.82);
+  backdrop-filter: blur(20px);
   border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(75, 1, 94, 0.3);
   display: flex;
   flex-direction: column;
   margin: 16px;
@@ -152,6 +154,10 @@ const ContentOverlay = styled.div`
   position: relative;
   width: calc(100% - 32px);
   z-index: 1;
+
+  @supports not (backdrop-filter: blur(1px)) {
+    background-color: #eab9ff;
+  }
 `;
 
 const Title = styled.h1`
