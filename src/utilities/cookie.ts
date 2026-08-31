@@ -14,7 +14,7 @@ const getUserNameFromCookie = (meetingId: string) => {
   return decodedCookie.split(":")[0];
 };
 
-const getPasscodeFromCookie = (meetingId: string) => {
+const getPasscodeFromCookie = (meetingId: string = "") => {
   const cookieName = `when-${meetingId}`;
   const cookie = getCookie(cookieName) || "";
   const decodedCookie = atob(decodeURIComponent(cookie));

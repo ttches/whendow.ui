@@ -1,9 +1,13 @@
 import styled from "styled-components";
 import Calendar from "./Calendar/Calendar";
 import FloatingFooter from "./FloatingFooter";
+import PasscodeReminderModal from "./PasscodeReminderModal";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useCreateMeeting from "../api/mutations/useCreateMeeting";
+import useModal from "../hooks/useModal";
 import { compareDates } from "../utilities/dates";
+import { getPasscodeFromCookie } from "../utilities/cookie";
 
 export const Container = styled.div`
   margin: 0 auto;
@@ -31,6 +35,12 @@ const CreateMeeting = () => {
   const [step, setStep] = useState(CreateMeetingSteps.SelectDates);
   const [username, setUsername] = useState("");
   const createMeeting = useCreateMeeting();
+  const navigate = useNavigate();
+  const {
+    openModal: openPasscodeReminder,
+    closeModal: closePasscodeReminder,
+    Modal: PasscodeReminderOverlay,
+  } = useModal();
 
   const initialMonth = new Date().getMonth();
   const selectedDates = [startDate, endDate].filter(Boolean);
@@ -99,16 +109,28 @@ const CreateMeeting = () => {
     const nextStep = getNextStep();
 
     if (!nextStep) {
-      createMeeting.mutate({
-        name: meetingName,
-        owner: username,
-        startDate,
-        endDate,
-      });
+      createMeeting.mutate(
+        {
+          name: meetingName,
+          owner: username,
+          startDate,
+          endDate,
+        },
+        { onSuccess: openPasscodeReminder }
+      );
       return;
     }
 
     setStep(nextStep);
+  };
+
+  const handlePasscodeReminderClose = () => {
+    closePasscodeReminder();
+
+    const newMeetingId = createMeeting.data?.data.createMeeting.id;
+    if (newMeetingId) {
+      navigate(`/meeting/${newMeetingId}`);
+    }
   };
 
   const getNextStep = () => {
@@ -185,6 +207,12 @@ const CreateMeeting = () => {
           input={getInput()}
         />
       </Container>
+      <PasscodeReminderOverlay>
+        <PasscodeReminderModal
+          passcode={getPasscodeFromCookie(createMeeting.data?.data.createMeeting.id)}
+          onClose={handlePasscodeReminderClose}
+        />
+      </PasscodeReminderOverlay>
     </div>
   );
 };
