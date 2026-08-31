@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { request } from "../gql";
 import { GET_AVAILABILITY_BY_MEETING_ID_QUERY_KEY } from "../queries/getAvailabilitiesByMeetingId";
-import useLogin from "./useLogin";
 
 type CreateMeetingInput = {
   endDate: string;
@@ -40,19 +39,13 @@ const query = `mutation createMeeting($input: CreateMeetingInput!) {
 
 const useCreateMeeting = () => {
   const queryClient = useQueryClient();
-  const login = useLogin();
 
   return useMutation({
     mutationFn: async (input: CreateMeetingInput) =>
       request<CreateMeetingResponse>(query, { input }),
-    onSuccess: async (res, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [GET_AVAILABILITY_BY_MEETING_ID_QUERY_KEY],
-      });
-
-      await login.mutateAsync({
-        username: variables.owner,
-        meetingId: res.data.createMeeting.id,
       });
     },
   });

@@ -8,7 +8,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "vite dev --port 8000",
+    "dev": "vite dev --mode dev --port 8000",
     "local": "vite --mode dev --port 8000",
     "build": "vite build",
     "build-safe": "tsc -b && vite build",

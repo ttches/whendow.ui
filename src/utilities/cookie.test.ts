@@ -1,11 +1,5 @@
-import { beforeEach, describe, expect, it } from "vitest";
-import {
-  getCookie,
-  getPasscodeFromCookie,
-  getUserNameFromCookie,
-  getUsername,
-  storeUserDataForDevelopment,
-} from "./cookie";
+import { describe, expect, it } from "vitest";
+import { getCookie, getPasscodeFromCookie, getUserNameFromCookie } from "./cookie";
 
 describe("getCookie", () => {
   it("finds a cookie by name among several", () => {
@@ -37,21 +31,5 @@ describe("getPasscodeFromCookie", () => {
     document.cookie = `when-${meetingId}=${encoded}`;
 
     expect(getPasscodeFromCookie(meetingId)).toBe("some-token");
-  });
-});
-
-describe("storeUserDataForDevelopment + getUsername (dev)", () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
-  it("round-trips a username through localStorage in dev", () => {
-    storeUserDataForDevelopment("meeting-456", "bob");
-
-    expect(getUsername("meeting-456")).toBe("bob");
-  });
-
-  it("returns null when nothing has been stored for that meeting", () => {
-    expect(getUsername("meeting-unknown")).toBeNull();
   });
 });

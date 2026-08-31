@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 const ContentOverlay = styled.div`
   align-items: center;
@@ -29,24 +29,56 @@ const Description = styled.p`
   text-align: center;
 `;
 
-const PasscodeRow = styled.div`
+const REVEALED_COLORS = { border: "#aa2bd1", outline: "#cb8adf" };
+const CENSORED_COLORS = { border: "#aa2bd1", outline: "#eab9ff" };
+const FLASH_COLOR = "#aa2bd1";
+
+const flash = (borderColor: string, outlineColor: string) => keyframes`
+  0%, 100% {
+    border-color: ${borderColor};
+    outline-color: ${outlineColor};
+  }
+  50% {
+    border-color: ${FLASH_COLOR};
+    outline-color: ${FLASH_COLOR};
+  }
+`;
+
+const PasscodeRow = styled.div<{ $revealed: boolean; $copied: boolean }>`
   align-items: center;
   background-color: white;
   border-radius: 9px;
-  border: 1px solid black;
   display: flex;
   gap: 12px;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 32px;
   padding: 16px 20px;
-  width: 100%;
+  width: calc(100% - 24px);
+
+  ${({ $revealed }) => {
+    const { border, outline } = $revealed ? REVEALED_COLORS : CENSORED_COLORS;
+    return css`
+      border: 4px solid ${border};
+      outline: 12px solid ${outline};
+    `;
+  }}
+
+  ${({ $copied, $revealed }) => {
+    const { border, outline } = $revealed ? REVEALED_COLORS : CENSORED_COLORS;
+    return (
+      $copied &&
+      css`
+        animation: ${flash(border, outline)} 400ms ease;
+      `
+    );
+  }}
 `;
 
 const PasscodeText = styled.span`
   color: #4b015e;
   flex-grow: 1;
   font-family: "copasetic";
-  font-size: 36px;
+  font-size: 24px;
   overflow-wrap: anywhere;
   text-align: center;
 `;
@@ -82,14 +114,6 @@ const CopyButton = styled.button`
   }
 `;
 
-const CopiedLabel = styled.span`
-  color: #4b015e;
-  font-family: "simplifica";
-  font-size: 16px;
-  height: 20px;
-  margin-bottom: 20px;
-`;
-
 const ContinueButton = styled.button`
   align-items: center;
   background-color: #aa2bd1;
@@ -111,7 +135,13 @@ const ContinueButton = styled.button`
 `;
 
 const CopyIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    aria-hidden="true"
+  >
     <rect
       x="9"
       y="9"
@@ -159,10 +189,10 @@ const PasscodeReminderModal = ({
     <ContentOverlay>
       <Title>Save Your Passcode</Title>
       <Description>
-        You'll need this passcode to get back in if you switch devices or
-        clear your cookies. Write it down now — it won't be shown again.
+        You'll need this passcode to get back in if you switch devices or clear
+        your cookies. Write it down now — it won't be shown again.
       </Description>
-      <PasscodeRow>
+      <PasscodeRow $revealed={isRevealed} $copied={copied}>
         <PasscodeText>{isRevealed ? passcode : censor(passcode)}</PasscodeText>
         <ShowButton onClick={() => setIsRevealed((current) => !current)}>
           {isRevealed ? "Hide" : "Show"}
@@ -171,7 +201,6 @@ const PasscodeReminderModal = ({
           <CopyIcon />
         </CopyButton>
       </PasscodeRow>
-      <CopiedLabel>{copied ? "Copied!" : ""}</CopiedLabel>
       <ContinueButton onClick={onClose}>Got it</ContinueButton>
     </ContentOverlay>
   );

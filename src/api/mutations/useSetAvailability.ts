@@ -4,10 +4,6 @@ import {
   GET_AVAILABILITY_BY_MEETING_ID_QUERY_KEY,
   MeetingAvailability,
 } from "../queries/getAvailabilitiesByMeetingId";
-import {
-  storeUserDataForDevelopment,
-  getUsername,
-} from "../../utilities/cookie";
 
 type SetAvailabilityInput = {
   meetingId: string;
@@ -35,10 +31,6 @@ const useSetAvailability = () => {
     mutationFn: async (input: SetAvailabilityInput) =>
       request<SetAvailabilityResponse>(mutation, { input }),
     onSuccess: (_, variables) => {
-      const currentUsername = getUsername(variables.meetingId);
-      if (currentUsername) {
-        storeUserDataForDevelopment(variables.meetingId, currentUsername);
-      }
       queryClient.invalidateQueries({
         queryKey: [
           GET_AVAILABILITY_BY_MEETING_ID_QUERY_KEY,

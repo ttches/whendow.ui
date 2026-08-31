@@ -23,8 +23,7 @@ describe("PasscodeReminderModal", () => {
     render(<PasscodeReminderModal passcode={passcode} onClose={vi.fn()} />);
     fireEvent.click(screen.getByLabelText("Copy passcode"));
 
-    await screen.findByText("Copied!");
-    expect(writeText).toHaveBeenCalledWith(passcode);
+    await vi.waitFor(() => expect(writeText).toHaveBeenCalledWith(passcode));
   });
 
   it("calls onClose when dismissed", () => {
