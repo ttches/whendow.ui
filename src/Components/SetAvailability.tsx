@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import Calendar, { IndicatorType } from "./Calendar/Calendar";
-import { Container, StepContainer } from "./CreateMeeting";
+import { Container, StepContainer } from "./CreateMeeting.styles";
 import FloatingFooter from "./FloatingFooter";
 import LoginModal from "./LoginModal";
 import PasscodeReminderModal from "./PasscodeReminderModal";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Calendar, { IndicatorType } from "./Calendar/Calendar";
-import { Container, StepContainer } from "./CreateMeeting";
+import { Container, StepContainer } from "./CreateMeeting.styles";
 import { MeetingAvailability } from "../api/queries/getAvailabilitiesByMeetingId";
 import { compareDates } from "../utilities/dates";
 import useUsername from "../hooks/useUsername";

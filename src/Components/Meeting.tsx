@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
 import SetAvailability from "./SetAvailability";
 import useGetMeetingById from "../api/queries/getMeetingById";
 import useAvailabilitiesByMeetingId from "../api/queries/getAvailabilitiesByMeetingId";
@@ -8,20 +7,13 @@ import ViewAvailability from "./ViewAvailability";
 import SelectWinningDates from "./SelectWinningDates";
 import LockedMeeting from "./LockedMeeting";
 import useUsername from "../hooks/useUsername";
+import { MeetingName } from "./Meeting.styles";
 
 enum CalendarMode {
   View = "view",
   SetAvailability = "setAvailability",
   SelectWinners = "selectWinners",
 }
-
-const MeetingName = styled.h1`
-  color: #e8e2f4;
-  font-family: "copasetic";
-  font-size: 36px;
-  margin: 16px 0;
-  text-align: center;
-`;
 
 const Meeting = () => {
   const [calendarMode, setCalendarMode] = useState(CalendarMode.View);

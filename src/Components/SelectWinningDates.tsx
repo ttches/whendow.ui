@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Calendar from "./Calendar/Calendar";
-import { Container, StepContainer } from "./CreateMeeting";
+import { Container, StepContainer } from "./CreateMeeting.styles";
 import FloatingFooter from "./FloatingFooter";
 import useLockMeeting from "../api/mutations/useLockMeeting";
 import { MeetingAvailability } from "../api/queries/getAvailabilitiesByMeetingId";
