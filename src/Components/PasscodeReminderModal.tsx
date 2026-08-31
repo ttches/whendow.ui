@@ -4,6 +4,7 @@ import {
   ContinueButton,
   CopyButton,
   Description,
+  Heart,
   PasscodeRow,
   PasscodeText,
   ShowButton,
@@ -40,7 +41,26 @@ type PasscodeReminderModalProps = {
   onClose: () => void;
 };
 
-const censor = (passcode: string) => passcode.replace(/[^-]/g, "•");
+const HeartMask = () => (
+  <Heart viewBox="0 0 12 16" aria-hidden="true">
+    <path
+      d="M6 15.5C4.2 11.5 0.6 8.6 0.6 5.2C0.6 2.5 4.2 1.8 6 4.2C7.8 1.8 11.4 2.5 11.4 5.2C11.4 8.6 7.8 11.5 6 15.5Z"
+      fill="currentColor"
+    />
+  </Heart>
+);
+
+const HEARTS_PER_WORD = 3;
+
+const censor = (passcode: string) =>
+  passcode
+    .split("-")
+    .map((_, wordIndex) =>
+      Array.from({ length: HEARTS_PER_WORD }, (_, heartIndex) => (
+        <HeartMask key={`${wordIndex}-${heartIndex}`} />
+      )),
+    )
+    .flatMap((word, wordIndex) => (wordIndex === 0 ? word : ["-", ...word]));
 
 const PasscodeReminderModal = ({
   passcode = "",

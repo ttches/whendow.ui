@@ -82,6 +82,13 @@ export const PasscodeText = styled.span`
   text-align: center;
 `;
 
+export const Heart = styled.svg`
+  height: 16px;
+  margin: 0 1px;
+  vertical-align: -2px;
+  width: 12px;
+`;
+
 export const ShowButton = styled.button`
   background: transparent;
   border: 1px solid #4b015e;
