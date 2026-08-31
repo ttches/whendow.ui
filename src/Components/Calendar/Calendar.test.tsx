@@ -28,9 +28,27 @@ describe("grid generation", () => {
 });
 
 describe("month navigation", () => {
+  const nextMonth = () => screen.getByRole("button", { name: "Next month" });
+  const previousMonth = () =>
+    screen.getByRole("button", { name: "Previous month" });
+
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date(2023, 11, 15));
+  });
+
+  it("opens on initialMonth even when it is January", () => {
+    render(
+      <Calendar initialMonth={0} selectedDates={[]} onDateClick={vi.fn()} />,
+    );
+
+    expect(screen.getByText("January")).toBeInTheDocument();
+  });
+
+  it("falls back to the current month when initialMonth is omitted", () => {
+    render(<Calendar selectedDates={[]} onDateClick={vi.fn()} />);
+
+    expect(screen.getByText("December")).toBeInTheDocument();
   });
 
   it("advances the header label on next-month click", () => {
@@ -38,7 +56,7 @@ describe("month navigation", () => {
 
     expect(screen.getByText("December")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText(">"));
+    fireEvent.click(nextMonth());
 
     expect(screen.getByText("January")).toBeInTheDocument();
   });
@@ -48,8 +66,8 @@ describe("month navigation", () => {
       <Calendar selectedDates={[]} onDateClick={vi.fn()} />,
     );
 
-    fireEvent.click(screen.getByText(">"));
-    fireEvent.click(screen.getByText(">"));
+    fireEvent.click(nextMonth());
+    fireEvent.click(nextMonth());
 
     expect(screen.getByText("February")).toBeInTheDocument();
     expect(container.querySelectorAll(".out-of-month")).toHaveLength(13);
@@ -61,7 +79,7 @@ describe("month navigation", () => {
 
     expect(screen.getByText("January")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText("<"));
+    fireEvent.click(previousMonth());
 
     expect(screen.getByText("December")).toBeInTheDocument();
   });

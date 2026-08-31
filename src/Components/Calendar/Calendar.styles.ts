@@ -99,17 +99,18 @@ export const Month = styled.h3`
 
 export const ChangeMonth = styled.button`
   align-items: center;
-  background-color: #aa2bd1;
-  border: 3px solid #4b015e;
-  color: white;
+  background-color: transparent;
+  border: 2px solid rgba(75, 1, 94, 0.25);
+  color: #7a2b90;
   cursor: pointer;
   display: flex;
-  height: 36px;
-  width: 44px;
+  height: 30px;
+  width: 38px;
   justify-content: center;
   padding: 0px;
   transition:
-    transform 0.15s ease-in-out,
+    color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
     background-color 0.15s ease-in-out;
   user-select: none;
 
@@ -122,13 +123,13 @@ export const ChangeMonth = styled.button`
   }
 
   &:hover {
-    background-color: #0d7b7b;
-    border-color: #aa2bd1;
-    transform: scale(1.1);
+    background-color: rgba(75, 1, 94, 0.1);
+    border-color: rgba(75, 1, 94, 0.5);
+    color: #4b015e;
   }
 
   &:active {
-    transform: scale(0.95);
+    background-color: rgba(75, 1, 94, 0.18);
   }
 `;
 

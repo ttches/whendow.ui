@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/experimental-ct-react";
 import { Route, Routes } from "react-router-dom";
 import Meeting from "./Meeting";
+import { julyIso } from "../test/calendarDates";
 
 test("renders the default view for an unlocked meeting", async ({ mount, page }) => {
   await page.route("**/graphql/**", async (route) => {
@@ -12,8 +13,8 @@ test("renders the default view for an unlocked meeting", async ({ mount, page })
           data: {
             meetingById: {
               name: "Team Offsite",
-              startDate: "2025-07-01",
-              endDate: "2025-07-31",
+              startDate: julyIso(1),
+              endDate: julyIso(31),
               owner: "alice",
               locked: false,
               winningDates: [],
@@ -27,8 +28,8 @@ test("renders the default view for an unlocked meeting", async ({ mount, page })
       json: {
         data: {
           availabilityByMeetingId: [
-            { id: 1, meetingId: "m1", date: "2025-07-09", userName: "alice" },
-            { id: 2, meetingId: "m1", date: "2025-07-09", userName: "bob" },
+            { id: 1, meetingId: "m1", date: julyIso(9), userName: "alice" },
+            { id: 2, meetingId: "m1", date: julyIso(9), userName: "bob" },
           ],
         },
       },

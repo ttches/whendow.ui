@@ -76,8 +76,8 @@ describe("SelectWinningDates", () => {
     const januaryFirstCell = screen.getAllByText("1")[0].closest("div")!;
     fireEvent.click(januaryFirstCell);
 
-    const lockInButton = document.querySelector("button.right") as HTMLButtonElement;
-    expect(lockInButton.disabled).toBe(false);
+    const lockInButton = screen.getByRole("button", { name: ">" });
+    expect(lockInButton).toBeEnabled();
 
     vi.useRealTimers();
     fireEvent.click(lockInButton);

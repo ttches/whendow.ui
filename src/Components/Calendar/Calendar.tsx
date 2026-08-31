@@ -33,6 +33,7 @@ const ChevronIcon = ({ direction }: { direction: "left" | "right" }) => (
     height="14"
     viewBox="0 0 24 24"
     fill="none"
+    aria-hidden="true"
     style={{ transform: direction === "right" ? "rotate(180deg)" : undefined }}
   >
     <path
@@ -79,7 +80,7 @@ const Calendar = ({
   userName,
 }: CalendarProps) => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(
-    initialMonth || new Date().getMonth(),
+    initialMonth ?? new Date().getMonth(),
   );
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
@@ -205,11 +206,19 @@ const Calendar = ({
   return (
     <CalendarContainer>
       <MonthContainer>
-        <ChangeMonth className="left" onClick={handleBackMonth}>
+        <ChangeMonth
+          aria-label="Previous month"
+          className="left"
+          onClick={handleBackMonth}
+        >
           <ChevronIcon direction="left" />
         </ChangeMonth>
         <Month>{`${months[currentMonthIndex]}`}</Month>
-        <ChangeMonth className="right" onClick={handleNextMonth}>
+        <ChangeMonth
+          aria-label="Next month"
+          className="right"
+          onClick={handleNextMonth}
+        >
           <ChevronIcon direction="right" />
         </ChangeMonth>
       </MonthContainer>

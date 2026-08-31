@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 import "../src/index.css";
+import "../src/App.css";
 import { beforeMount } from "@playwright/experimental-ct-react/hooks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
