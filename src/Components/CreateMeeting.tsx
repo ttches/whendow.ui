@@ -197,6 +197,7 @@ const CreateMeeting = () => {
             isInRange={isInRange}
             onDateClick={handleDateClick}
             selectedDates={selectedDates}
+            showRangeOutline
           />
         </StepContainer>
         <FloatingFooter

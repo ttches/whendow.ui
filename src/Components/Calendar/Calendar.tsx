@@ -150,6 +150,7 @@ type CalendarProps = {
   isInRange?: (dateString: string) => boolean;
   onDateClick: (dateString: string) => void;
   selectedDates: string[];
+  showRangeOutline?: boolean;
   theme?: IndicatorType;
   userName?: string;
 };
@@ -160,6 +161,7 @@ const Calendar = ({
   isInRange = (_dateString: string) => false,
   onDateClick,
   selectedDates,
+  showRangeOutline = false,
   theme = "texture",
   userName,
 }: CalendarProps) => {
@@ -273,8 +275,11 @@ const Calendar = ({
     lastDateOfPreviousMonth,
   );
 
+  const hideRangeOutline = (dateString: string) =>
+    !showRangeOutline || selectedDates.length < 2 || !isInRange(dateString);
+
   const getSelectionBorders = (dateString: string, index: number) => {
-    if (selectedDates.length < 2 || !isInRange(dateString)) return {};
+    if (hideRangeOutline(dateString)) return {};
     const col = index % 7;
     return {
       $borderTop: index < 7 || !isInRange(dateArray[index - 7]),
@@ -306,7 +311,9 @@ const Calendar = ({
               key={dateString}
               className={classNames({
                 selected: selectedDates.includes(dateString),
-                "in-range": selectedDates.length >= 2 && isInRange(dateString) && !selectedDates.includes(dateString),
+                "in-range":
+                  !hideRangeOutline(dateString) &&
+                  !selectedDates.includes(dateString),
                 "out-of-month": date.getMonth() != currentMonthIndex,
                 disabled: !isInRange(dateString),
               })}
