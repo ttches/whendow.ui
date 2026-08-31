@@ -10,9 +10,9 @@ import { compareDates } from "../utilities/dates";
 import { getPasscodeFromCookie } from "../utilities/cookie";
 
 export const Container = styled.div`
-  margin: 0 auto;
-  margin: 8px;
+  margin: 8px auto;
   max-width: 550px;
+  padding: 0 8px;
 `;
 
 const PageContainer = styled.div`

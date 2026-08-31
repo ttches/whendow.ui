@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import styled from "styled-components";
 import SetAvailability from "./SetAvailability";
 import useGetMeetingById from "../api/queries/getMeetingById";
 import useAvailabilitiesByMeetingId from "../api/queries/getAvailabilitiesByMeetingId";
@@ -13,6 +14,14 @@ enum CalendarMode {
   SetAvailability = "setAvailability",
   SelectWinners = "selectWinners",
 }
+
+const MeetingName = styled.h1`
+  color: #e8e2f4;
+  font-family: "copasetic";
+  font-size: 36px;
+  margin: 16px 0;
+  text-align: center;
+`;
 
 const Meeting = () => {
   const [calendarMode, setCalendarMode] = useState(CalendarMode.View);
@@ -59,7 +68,7 @@ const Meeting = () => {
 
   return (
     <div>
-      <h1>{name}</h1>
+      <MeetingName>{name}</MeetingName>
       {locked ? (
         <LockedMeeting
           availabilities={availabilities}
