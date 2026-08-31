@@ -11,7 +11,7 @@ import { getPasscodeFromCookie } from "../utilities/cookie";
 
 export const Container = styled.div`
   margin: 0 auto;
-  margin-top: 16px;
+  margin: 8px;
   max-width: 550px;
 `;
 
@@ -109,7 +109,7 @@ const CreateMeeting = () => {
   };
 
   const handleMeetingNameChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setMeetingName(event.currentTarget.value);
   };
@@ -129,7 +129,7 @@ const CreateMeeting = () => {
           startDate,
           endDate,
         },
-        { onSuccess: openPasscodeReminder }
+        { onSuccess: openPasscodeReminder },
       );
       return;
     }
@@ -223,7 +223,9 @@ const CreateMeeting = () => {
       </Container>
       <PasscodeReminderOverlay>
         <PasscodeReminderModal
-          passcode={getPasscodeFromCookie(createMeeting.data?.data.createMeeting.id)}
+          passcode={getPasscodeFromCookie(
+            createMeeting.data?.data.createMeeting.id,
+          )}
           onClose={handlePasscodeReminderClose}
         />
       </PasscodeReminderOverlay>

@@ -7,13 +7,17 @@ const FooterContainer = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 84px;
+  height: 64px;
   background-color: #eab9ff;
   border-radius: 80px;
   display: flex;
   justify-content: space-between;
   justify-self: flex-end;
   width: 100%;
+
+  @media (min-width: 768px) {
+    height: 84px;
+  }
 `;
 
 const NavigationButton = styled.button`
@@ -24,10 +28,10 @@ const NavigationButton = styled.button`
   display: flex;
   font-family: "simplifica";
   justify-content: center;
-  height: 62px;
-  font-size: 32px;
+  height: 48px;
+  font-size: 24px;
   line-height: 14px;
-  width: 40px;
+  width: 32px;
   padding: 0px;
 
   &.left {
@@ -48,6 +52,12 @@ const NavigationButton = styled.button`
     background-color: #0d7b7b;
     border-color: #aa2bd1;
   }
+
+  @media (min-width: 768px) {
+    height: 62px;
+    font-size: 32px;
+    width: 40px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -55,7 +65,11 @@ const ButtonContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 70px;
+  width: 56px;
+
+  @media (min-width: 768px) {
+    width: 70px;
+  }
 `;
 
 const TextContainer = styled.div`
@@ -63,11 +77,16 @@ const TextContainer = styled.div`
   color: #4b015e;
   display: flex;
   font-family: "copasetic";
-  font-size: 24px;
+  font-size: 18px;
   flex-grow: 1;
   justify-content: center;
-  padding: 0 16px;
+  padding: 0 12px;
   width: 100%;
+
+  @media (min-width: 768px) {
+    font-size: 24px;
+    padding: 0 16px;
+  }
 `;
 
 const Input = styled.input`
@@ -76,11 +95,11 @@ const Input = styled.input`
   border-radius: 9px;
   border: 1px solid black;
   box-shadow: none;
-  font-size: 28px;
-  padding: 12px;
+  font-size: 20px;
+  padding: 8px;
   width: 100%;
   font-family: "copasetic";
-  height: 48px;
+  height: 36px;
 
   ::placeholder {
     color: #b096ce;
@@ -89,6 +108,12 @@ const Input = styled.input`
   &:focus {
     outline: 12px solid #cb8adf;
     border: 4px solid #aa2bd1;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 28px;
+    padding: 12px;
+    height: 48px;
   }
 `;
 
