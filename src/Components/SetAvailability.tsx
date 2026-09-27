@@ -80,6 +80,7 @@ const SetAvailability = ({
           selectedDates={dates}
           availabilities={availabilities}
           theme={theme}
+          userName={usernameFromCookie}
           showRangeOutline
         />
       </StepContainer>

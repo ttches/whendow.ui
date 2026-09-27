@@ -1,17 +1,11 @@
-import { useState } from "react";
-import { IndicatorType } from "./Calendar/Calendar";
-import ViewAvailability from "./ViewAvailability";
-import {
-  CalendarGrid,
-  CalendarSection,
-  Description,
-  PropString,
-  SectionTitle,
-  ShowcaseContainer,
-  Title,
-} from "./CalendarShowcase.styles";
+import styled from "styled-components";
+import ShowcaseCalendar from "./Calendar/ShowcaseCalendar";
+import { showcaseIdeas } from "./Calendar/ShowcaseCells";
+import { showcaseIdeas2 } from "./Calendar/ShowcaseCells2";
+import { showcaseIdeas3 } from "./Calendar/ShowcaseCells3";
+import { MeetingAvailability } from "../api/queries/getAvailabilitiesByMeetingId";
 
-const mockAvailabilities = [
+const mockAvailabilities: MeetingAvailability[] = [
   { date: "2025/7/8", id: 1, meetingId: "showcase", userName: "alice" },
   { date: "2025/7/9", id: 2, meetingId: "showcase", userName: "alice" },
   { date: "2025/7/9", id: 3, meetingId: "showcase", userName: "bob" },
@@ -41,108 +35,143 @@ const mockAvailabilities = [
   { date: "2025/7/24", id: 27, meetingId: "showcase", userName: "bob" },
   { date: "2025/7/24", id: 28, meetingId: "showcase", userName: "charlie" },
   { date: "2025/7/24", id: 29, meetingId: "showcase", userName: "diana" },
+  { date: "2025/7/28", id: 30, meetingId: "showcase", userName: "frank" },
 ];
+
+const SHOWCASE_USER = "frank";
+const SHOWCASE_WINNERS = ["2025/7/12", "2025/7/15"];
+
+const allIdeas = [...showcaseIdeas, ...showcaseIdeas2, ...showcaseIdeas3];
+
+const ShowcaseContainer = styled.div`
+  padding: 20px;
+  background-color: #f0f0f0;
+  min-height: 100vh;
+`;
+
+const Title = styled.h1`
+  color: #551665;
+  font-family: "copasetic";
+  text-align: center;
+  margin-bottom: 12px;
+`;
+
+const Subtitle = styled.p`
+  color: #666;
+  font-family: "simplifica";
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 20px;
+  line-height: 1.5;
+`;
+
+const Legend = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  justify-content: center;
+  margin-bottom: 40px;
+  font-family: "simplifica";
+  color: #551665;
+`;
+
+const LegendItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+`;
+
+const Swatch = styled.span<{ $color: string; $shape?: "bar" | "star" }>`
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: ${({ $color, $shape }) =>
+    $shape === "star" ? "transparent" : $color};
+  color: ${({ $color, $shape }) => ($shape === "star" ? $color : "inherit")};
+  font-size: ${({ $shape }) => ($shape === "star" ? "20px" : "inherit")};
+  line-height: 18px;
+  text-align: center;
+`;
+
+const CalendarGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+`;
+
+const CalendarSection = styled.div`
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const SectionTitle = styled.h2`
+  color: #551665;
+  font-family: "copasetic";
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+`;
+
+const Description = styled.p`
+  color: #666;
+  font-family: "simplifica";
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.4;
+  min-height: 60px;
+`;
 
 type CalendarShowcaseProps = Record<string, never>;
 
 const CalendarShowcase = (_props: CalendarShowcaseProps) => {
-  const [selectedDate, setSelectedDate] = useState("");
-
-  const handleDateClick = (dateString: string) => {
-    setSelectedDate(dateString);
-  };
-
-  const isInRange = (dateString: string) => {
-    return true;
-  };
-
-  const calendarConfigs = [
-    {
-      type: "none" as IndicatorType,
-      title: "Original (No Indicators)",
-      description:
-        "Your current calendar design without availability indicators",
-      prop: 'indicatorType="none"',
-    },
-    {
-      type: "gradient-border" as IndicatorType,
-      title: "Gradient - Left Border",
-      description:
-        "Left border that gets thicker and more colorful with higher availability",
-      prop: 'indicatorType="gradient-border"',
-    },
-    {
-      type: "gradient-triangle" as IndicatorType,
-      title: "Gradient - Corner Triangle",
-      description:
-        "Triangle in top-right corner that grows larger and more vibrant",
-      prop: 'indicatorType="gradient-triangle"',
-    },
-    {
-      type: "gradient-glow" as IndicatorType,
-      title: "Gradient - Glow Effect",
-      description:
-        "Inset box shadow that intensifies with availability percentage",
-      prop: 'indicatorType="gradient-glow"',
-    },
-    {
-      type: "gradient-glow-strong" as IndicatorType,
-      title: "Gradient - Strong Glow Effect",
-      description:
-        "Dramatic outer glow with multiple shadow layers - much more pronounced",
-      prop: 'indicatorType="gradient-glow-strong"',
-    },
-    {
-      type: "gradient-background" as IndicatorType,
-      title: "Gradient - Background Tint",
-      description:
-        "More obvious background color that gets more vibrant with availability",
-      prop: 'indicatorType="gradient-background"',
-    },
-    {
-      type: "dots" as IndicatorType,
-      title: "Dot Matrix (Improved) - DEFAULT",
-      description: "Only filled dots shown - cleaner with no visual noise",
-      prop: 'indicatorType="dots" (or omit for default)',
-    },
-    {
-      type: "bars" as IndicatorType,
-      title: "Triangle/Mountain Bars",
-      description:
-        "Symmetrical triangle pattern - peaks in middle, shrinks outward",
-      prop: 'indicatorType="bars"',
-    },
-    {
-      type: "texture" as IndicatorType,
-      title: "Height-Based Dots Texture (Enhanced)",
-      description:
-        "Small dots texture that fills from bottom up with teal dots in bottom 2 rows when current user has availability",
-      prop: 'indicatorType="texture"',
-    },
-    {
-      type: "texture-squares" as IndicatorType,
-      title: "Height-Based Squares Texture",
-      description:
-        "Small squares texture that fills from bottom up - no effect when 0%",
-      prop: 'indicatorType="texture-squares"',
-    },
-  ];
-
   return (
     <ShowcaseContainer>
-      <Title>Calendar Availability Indicators Showcase</Title>
+      <Title>Calendar Availability Ideas</Title>
+      <Subtitle>
+        Twenty-five cell designs. Each one encodes availability percentage
+        (purple), the current user's selected days (teal or blue), and the
+        winning dates decided by the backend (gold). Mock user is{" "}
+        <strong>{SHOWCASE_USER}</strong>; winners are{" "}
+        <strong>July 12</strong> and <strong>July 15</strong> — July 15 is both
+        a winner and one of the user's days, so it layers both treatments. The
+        shimmer set (21–25) uses blue for your days and an extra burst of
+        faster orange motes for winners; July 28 has Frank as the only person
+        available, so every mote there is blue.
+      </Subtitle>
+      <Legend>
+        <LegendItem>
+          <Swatch $color="rgba(170, 43, 209, 0.95)" /> % of people available
+        </LegendItem>
+        <LegendItem>
+          <Swatch $color="rgba(20, 184, 166, 0.95)" $shape="bar" /> Your selected
+          days
+        </LegendItem>
+        <LegendItem>
+          <Swatch $color="rgba(245, 179, 1, 0.95)" $shape="star">
+            ★
+          </Swatch>{" "}
+          Winning date
+        </LegendItem>
+      </Legend>
       <CalendarGrid>
-        {calendarConfigs.map((config) => (
-          <CalendarSection key={config.type}>
-            <SectionTitle>{config.title}</SectionTitle>
-            <Description>{config.description}</Description>
-            <PropString>{config.prop}</PropString>
-            <ViewAvailability
-              startDate={"2025/7/1"}
-              endDate={"2025/7/31"}
+        {allIdeas.map((idea) => (
+          <CalendarSection key={idea.id}>
+            <SectionTitle>{idea.title}</SectionTitle>
+            <Description>{idea.description}</Description>
+            <ShowcaseCalendar
               availabilities={mockAvailabilities}
-              theme={config.type}
-              userNameOverride="alice"
+              currentUser={SHOWCASE_USER}
+              winningDates={SHOWCASE_WINNERS}
+              month={6}
+              year={2025}
+              Cell={idea.Cell}
             />
           </CalendarSection>
         ))}

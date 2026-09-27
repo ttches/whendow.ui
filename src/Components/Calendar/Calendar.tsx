@@ -48,6 +48,7 @@ const ChevronIcon = ({ direction }: { direction: "left" | "right" }) => (
 
 export type IndicatorType =
   | "none"
+  | "shimmer-columns"
   | "gradient-border"
   | "gradient-triangle"
   | "gradient-glow"
@@ -77,7 +78,7 @@ const Calendar = ({
   onDateClick,
   selectedDates,
   showRangeOutline = false,
-  theme = "texture",
+  theme = "shimmer-columns",
   userName,
   winningDates = [],
 }: CalendarProps) => {
@@ -91,29 +92,12 @@ const Calendar = ({
       ? [...new Set(availabilities.map((a) => a.userName))].length
       : 0;
 
-  const getAvailabilityPercentage = (dateString: string): number => {
-    if (!availabilities || totalGroupSize === 0) return 0;
-
-    const availabilitiesForDate = availabilities.filter(
-      (a) => a.date === dateString,
+  const getAvailableUsers = (dateString: string): Set<string> =>
+    new Set(
+      availabilities
+        .filter((a) => a.date === dateString)
+        .map((a) => a.userName),
     );
-
-    if (availabilitiesForDate.length === 0) return 0;
-
-    const uniqueUsersForDate = [
-      ...new Set(availabilitiesForDate.map((a) => a.userName)),
-    ];
-
-    return Math.round((uniqueUsersForDate.length / totalGroupSize) * 100);
-  };
-
-  const hasCurrentUserAvailability = (dateString: string): boolean => {
-    if (!availabilities || !userName) return false;
-
-    return availabilities.some(
-      (a) => a.date === dateString && a.userName === userName,
-    );
-  };
 
   const thisMonthFirstDateTime = new Date(currentYear, currentMonthIndex, 1);
   const firstDayOfMonth = new Date(currentYear, currentMonthIndex, 1).getDay();
@@ -231,8 +215,11 @@ const Calendar = ({
         ))}
         {dateArray.map((dateString, index) => {
           const date = new Date(dateString);
-          const availabilityPercentage = getAvailabilityPercentage(dateString);
-          const userHasAvailability = hasCurrentUserAvailability(dateString);
+          const availableUsers = getAvailableUsers(dateString);
+          const userHasAvailability = userName
+            ? availableUsers.has(userName)
+            : false;
+          const isWinner = winningDates.includes(dateString);
           const borders = getSelectionBorders(dateString, index);
           return (
             <DateCell
@@ -244,7 +231,7 @@ const Calendar = ({
                   !selectedDates.includes(dateString),
                 "out-of-month": date.getMonth() != currentMonthIndex,
                 disabled: !isInRange(dateString),
-                winning: winningDates.includes(dateString),
+                winning: isWinner,
               })}
               onClick={getHandleDateCellClick(dateString)}
               {...borders}
@@ -254,7 +241,9 @@ const Calendar = ({
               </span>
               <AvailabilityIndicator
                 hasCurrentUserAvailability={userHasAvailability}
-                percentage={availabilityPercentage}
+                availableCount={availableUsers.size}
+                totalCount={totalGroupSize}
+                isWinner={isWinner}
                 type={theme}
               />
             </DateCell>

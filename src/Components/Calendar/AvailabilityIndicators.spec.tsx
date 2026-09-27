@@ -18,7 +18,7 @@ for (const theme of themes) {
   test(`renders "${theme}" theme at 60% availability`, async ({ mount }) => {
     const component = await mount(
       <div style={{ position: "relative", width: 80, height: 80, background: "#551665" }}>
-        <AvailabilityIndicator type={theme} percentage={60} />
+        <AvailabilityIndicator type={theme} availableCount={3} totalCount={5} />
       </div>,
     );
     await expect(component).toHaveScreenshot();
@@ -28,7 +28,12 @@ for (const theme of themes) {
 test('renders "texture" theme with current-user highlight', async ({ mount }) => {
   const component = await mount(
     <div style={{ position: "relative", width: 80, height: 80, background: "#551665" }}>
-      <AvailabilityIndicator type="texture" percentage={60} hasCurrentUserAvailability />
+      <AvailabilityIndicator
+        type="texture"
+        availableCount={3}
+        totalCount={5}
+        hasCurrentUserAvailability
+      />
     </div>,
   );
   await expect(component).toHaveScreenshot();

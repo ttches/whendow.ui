@@ -13,21 +13,39 @@ import {
   TextureUserDotsOverlay,
   TriangleBarsContainer,
 } from "./AvailabilityIndicators.styles";
+import ShimmerColumnsOverlay from "./ShimmerColumnsOverlay";
 
 type AvailabilityIndicatorProps = {
   type: IndicatorType;
-  percentage: number;
+  availableCount?: number;
+  totalCount?: number;
   hasCurrentUserAvailability?: boolean;
+  isWinner?: boolean;
 };
 
 const AvailabilityIndicator = ({
   type,
-  percentage,
+  availableCount = 0,
+  totalCount = 0,
   hasCurrentUserAvailability = false,
+  isWinner = false,
 }: AvailabilityIndicatorProps) => {
   if (type === "none") return null;
 
+  const percentage =
+    totalCount > 0 ? Math.round((availableCount / totalCount) * 100) : 0;
+
   switch (type) {
+    case "shimmer-columns":
+      return (
+        <ShimmerColumnsOverlay
+          percentage={percentage}
+          isMine={hasCurrentUserAvailability}
+          isWinner={isWinner}
+          availableCount={availableCount}
+        />
+      );
+
     case "gradient-border":
       return <GradientBorderOverlay percentage={percentage} />;
 
