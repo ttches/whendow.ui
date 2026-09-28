@@ -29,10 +29,11 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: "npm"
-      - name: Install Yarn
-        run: npm install --global yarn
+          node-version: 26
+      - name: Enable Corepack
+        run: |
+          npm install --global corepack@latest
+          corepack enable
       - name: Install dependencies
         run: yarn install
       - name: Build
